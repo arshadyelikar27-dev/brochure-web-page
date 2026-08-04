@@ -16,7 +16,8 @@ import {
   Layout,
   Smartphone,
   Mail,
-  Check
+  Check,
+  Code
 } from "lucide-react";
 
 // Mock data with adjusted prices
@@ -41,6 +42,12 @@ const availableServices: Service[] = [
   
   // COMMUNICATION
   { id: "cm1", category: "COMMUNICATION", name: "Email Marketing", description: "Newsletters & automation", price: 1200, icon: "Mail" },
+];
+
+const categories = [
+  { id: "MARKETING", label: "Digital Marketing", icon: Megaphone },
+  { id: "CREATIVE", label: "Creative & Design", icon: PenTool },
+  { id: "DEVELOPMENT", label: "Web & App Development", icon: Code },
 ];
 
 const iconMap: Record<string, React.ElementType> = {
