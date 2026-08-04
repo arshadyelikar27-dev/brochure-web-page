@@ -128,7 +128,7 @@ export function SuccessScreen() {
   const openWhatsApp = () => {
     const text = `Hi GMM Team! I just built a custom package for ${clientDetails.businessName}. We selected the ${selectedPlan} plan. Please check the proposal I generated on your website.`;
     const encodedText = encodeURIComponent(text);
-    window.open(`https://wa.me/919876543210?text=${encodedText}`, '_blank');
+    window.open(`https://wa.me/919373124002?text=${encodedText}`, '_blank');
   };
 
   return (
