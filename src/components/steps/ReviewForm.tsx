@@ -34,7 +34,7 @@ export function ReviewForm() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-[80vh] w-full px-4 py-12 pb-24">
+    <div className="flex flex-col items-center justify-start w-full px-4 pt-0.5 md:pt-0.5 pb-0.5 md:pb-0.5">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -71,7 +71,7 @@ export function ReviewForm() {
                 <p className="font-bold text-xl text-foreground">
                   {selectedPlan === 'CUSTOM' ? 'Customizable Plan' : selectedPlan}
                 </p>
-                <Check className="w-5 h-5 text-primary" />
+                <div className="bg-accent p-1 rounded-full shadow-sm shadow-accent/30"><Check className="w-4 h-4 text-black stroke-[3]" /></div>
               </div>
             </div>
 
@@ -82,7 +82,7 @@ export function ReviewForm() {
                   {selectedServices.map(service => (
                     <li key={service.id} className="flex flex-col gap-2 bg-black/5 p-3 rounded-lg">
                       <div className="flex items-center gap-2 text-foreground/80">
-                        <Check className="w-4 h-4 text-primary" />
+                        <div className="bg-accent p-0.5 rounded-full shadow-sm shadow-accent/30"><Check className="w-3 h-3 text-black stroke-[3]" /></div>
                         <span className="text-sm font-bold text-foreground">{service.name}</span>
                       </div>
                       <div className="pl-6 flex flex-wrap gap-1">
@@ -148,17 +148,6 @@ export function ReviewForm() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm text-foreground-muted flex items-center gap-2"><Target className="w-4 h-4"/> Project Goal</label>
-              <select required name="projectGoal" value={clientDetails.projectGoal} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-foreground appearance-none">
-                <option value="" disabled>Select Primary Goal</option>
-                <option value="Lead Generation">Lead Generation</option>
-                <option value="Brand Awareness">Brand Awareness</option>
-                <option value="Sales/E-commerce">Sales / E-commerce</option>
-                <option value="Rebranding">Rebranding</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
 
             <div className="space-y-2">
               <label className="text-sm text-foreground-muted flex items-center gap-2"><FileText className="w-4 h-4"/> Extra Requirements</label>
@@ -170,7 +159,7 @@ export function ReviewForm() {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-lg shadow-primary/20 relative overflow-hidden"
+              className="w-full py-4 bg-accent text-black rounded-xl font-bold text-lg shadow-lg shadow-accent/20 relative overflow-hidden transition-all hover:brightness-95"
             >
               {isSubmitting ? (
                 <div className="flex items-center justify-center gap-2">

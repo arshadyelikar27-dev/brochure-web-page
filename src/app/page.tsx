@@ -2,7 +2,6 @@
 
 import { useStore } from "@/store/useStore";
 import { Header } from "@/components/Header";
-import { OpeningAnimation } from "@/components/steps/OpeningAnimation";
 import { PlanSelection } from "@/components/steps/PlanSelection";
 import { PackageBuilder } from "@/components/steps/PackageBuilder";
 import { ReviewForm } from "@/components/steps/ReviewForm";
@@ -16,20 +15,9 @@ export default function Home() {
     <main className="flex-1 flex flex-col relative pt-24">
       <Header />
       
-      <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col justify-center relative">
+      <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col justify-start relative">
         <AnimatePresence mode="wait">
-          {step === 0 && (
-            <motion.div
-              key="step-0"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.5 }}
-              className="w-full"
-            >
-              <OpeningAnimation />
-            </motion.div>
-          )}
+
           
           {step === 1 && (
             <motion.div

@@ -59,7 +59,7 @@ export function PackageBuilder() {
   const { selectedServices, toggleService, updateServiceValue, setStep } = useStore();
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-[85vh] w-full px-4 pt-16 md:py-12 pb-32 md:pb-36">
+    <div className="flex flex-col items-center justify-start w-full px-4 pt-0.5 md:pt-0.5 pb-0.5 md:pb-0.5">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -100,10 +100,10 @@ export function PackageBuilder() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: (catIndex * 0.1) + (index * 0.05) }}
-                      className={`relative flex flex-col md:flex-row items-start md:items-center p-4 md:p-5 rounded-2xl border transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md ${
+                      className={`relative rounded-2xl md:rounded-3xl border p-4 md:p-6 transition-all duration-300 cursor-pointer ${
                         isSelected 
                           ? "border-primary bg-white shadow-primary/10" 
-                          : "border-black/5 bg-slate-50 hover:border-black/10 hover:bg-white"
+                          : "border-black/5 bg-white hover:border-black/10 hover:shadow-sm"
                       }`}
                     >
                       {isSelected && (
@@ -122,9 +122,9 @@ export function PackageBuilder() {
                         onClick={() => toggleService(service as Service)}
                       >
                         <div className={`w-6 h-6 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
-                          isSelected ? 'border-primary bg-primary text-white' : 'border-black/20 bg-white'
+                          isSelected ? 'border-accent bg-accent text-black shadow-md shadow-accent/30' : 'border-black/20 bg-white'
                         }`}>
-                          {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
+                          {isSelected && <Check className="w-3.5 h-3.5 text-black stroke-[3]" />}
                         </div>
                         
                         <div className={`p-2.5 rounded-xl flex-shrink-0 ${isSelected ? 'bg-primary/10 text-primary' : 'bg-black/5 text-foreground'}`}>
@@ -223,9 +223,9 @@ export function PackageBuilder() {
       >
         <button
           onClick={() => setStep(3)}
-          className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20"
+          className="w-full flex items-center justify-center gap-2 bg-accent text-black py-4 rounded-xl font-bold text-lg hover:brightness-95 transition-all shadow-lg shadow-accent/20"
         >
-          Review Package <Check className="w-5 h-5" />
+          Review Package <Check className="w-5 h-5 stroke-[3]" />
         </button>
       </motion.div>
     </div>

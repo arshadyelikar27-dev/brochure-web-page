@@ -4,20 +4,33 @@
   --color-primary: #6312E5; /* Deep Purple */
   --color-primary-dark: #4a0cae;
   --color-accent: #E1F840; /* Lime Yellow */
-  --color-background: #F9FAFB; /* Soft Off-White */
+  --color-background: #F0F2F5; /* Light gray for contrast */
   --color-card: #FFFFFF; /* Pure White */
-  --color-card-hover: #F3F4F6;
+  --color-card-hover: #F8FAFC;
   --color-foreground: #111827; /* Dark Slate */
   --color-foreground-muted: #6B7280; /* Gray */
   --color-border: rgba(0, 0, 0, 0.05); /* Subtle dark border */
   
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  --color-sparkles-color: var(--sparkles-color);
+  --color-gradient-color: var(--gradient-color);
+
+  --animate-shine: shine var(--duration) infinite linear;
+}
+
+@keyframes shine {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  to { background-position: 0% 0%; }
 }
 
 :root {
-  --background: #F9FAFB;
+  --background: #F0F2F5;
   --foreground: #111827;
+  --gradient-color: #6312E5;
+  --sparkles-color: #E1F840;
 }
 
 body {

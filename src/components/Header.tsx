@@ -9,9 +9,8 @@ export function Header() {
 
   const getProgress = () => {
     switch (step) {
-      case 0: return 0;
-      case 1: return 33;
-      case 2: return 66;
+      case 1: return 0;
+      case 2: return 50;
       case 3: return 90;
       case 4: return 100;
       default: return 0;
@@ -35,9 +34,12 @@ export function Header() {
             onClick={reset}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-lg md:text-xl font-bold tracking-tighter cursor-pointer pl-1 md:pl-0 text-foreground"
+            className="cursor-pointer pl-1 md:pl-0 flex items-center relative"
           >
-            GMM<span className="text-primary">.</span>
+            {/* Invisible placeholder to keep the flex layout stable */}
+            <div className="w-10 h-10 md:w-12 md:h-12"></div>
+            {/* Absolutely positioned logo to grow without expanding navbar */}
+            <img src="/logo.png" alt="GMM Logo" className="absolute -top-4 md:-top-6 left-0 md:left-2 h-20 md:h-28 w-auto object-contain drop-shadow-md" />
           </motion.div>
         </div>
 

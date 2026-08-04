@@ -4,9 +4,9 @@ export type PlanType = 'GOOD' | 'BETTER' | 'BEST' | 'CUSTOM' | null;
 
 export type ServiceCategory = 'MARKETING' | 'CREATIVE' | 'DEVELOPMENT' | 'COMMUNICATION';
 
-export type ConfigType = 'QUANTITY' | 'TIER';
+type ConfigType = 'QUANTITY' | 'TIER';
 
-export interface QuantityField {
+interface QuantityField {
   id: string;
   label: string;
   min: number;
@@ -14,12 +14,12 @@ export interface QuantityField {
   step: number;
 }
 
-export interface QuantityConfig {
+interface QuantityConfig {
   type: 'QUANTITY';
   fields: QuantityField[];
 }
 
-export interface TierConfig {
+interface TierConfig {
   type: 'TIER';
   tiers: string[];
 }
@@ -33,16 +33,16 @@ export interface Service {
   config: QuantityConfig | TierConfig;
 }
 
-export interface SelectedService extends Service {
+interface SelectedService extends Service {
   selectedValue: Record<string, number> | string;
 }
 
-export interface ClientDetails {
+interface ClientDetails {
   name: string;
   businessName: string;
   phone: string;
   email: string;
-  projectGoal: string;
+
   budget: string;
   extraRequirements: string;
 }
@@ -72,30 +72,32 @@ interface StoreState {
   getTimeline: () => string;
 }
 
-export const basePlanTimelines = {
-  GOOD: '14 Days',
-  BETTER: '30 Days',
-  BEST: '45 Days',
-  CUSTOM: 'TBD',
-};
-
 const initialClientDetails = {
   name: '',
   businessName: '',
   phone: '',
   email: '',
-  projectGoal: '',
+
   budget: '',
   extraRequirements: '',
 };
 
 export const useStore = create<StoreState>((set, get) => ({
-  step: 0,
+  step: 1,
   setStep: (step) => set({ step }),
   nextStep: () => set((state) => ({ step: Math.min(state.step + 1, 4) })),
-  prevStep: () => set((state) => ({ step: Math.max(state.step - 1, 1) })),
+  prevStep: () => set((state) => {
+    const nextStep = (state.step === 3 && state.selectedPlan !== 'CUSTOM') 
+      ? 1 
+      : Math.max(state.step - 1, 1);
+      
+    if (nextStep === 1) {
+      return { step: 1, selectedPlan: null, selectedServices: [] };
+    }
+    return { step: nextStep };
+  }),
   reset: () => set({
-    step: 0,
+    step: 1,
     selectedPlan: null,
     selectedServices: [],
     clientDetails: initialClientDetails,
@@ -134,9 +136,9 @@ export const useStore = create<StoreState>((set, get) => ({
       selectedServices: state.selectedServices.map(service => {
         if (service.id === serviceId) {
           if (service.config.type === 'QUANTITY' && fieldId) {
-             return { ...service, selectedValue: { ...(service.selectedValue as Record<string, number>), [fieldId]: value } };
+             return { ...service, selectedValue: { ...(service.selectedValue as Record<string, number>), [fieldId]: value as number } };
           }
-          return { ...service, selectedValue: value };
+          return { ...service, selectedValue: value as string };
         }
         return service;
       })
@@ -153,8 +155,7 @@ export const useStore = create<StoreState>((set, get) => ({
     if (!selectedPlan) return 'TBD';
     
     if (selectedPlan === 'CUSTOM') {
-      if (selectedServices.length === 0) return 'TBD';
-      return `${selectedServices.length * 3} Days`;
+      return '30 Days';
     }
 
     return billingCycle === 'MONTHLY' ? '30 Days' : '365 Days';
