@@ -26,15 +26,13 @@ const availableServices: Service[] = [
   { id: "m1", category: "MARKETING", name: "Performance Marketing", description: "Lead Generation", price: 2500, icon: "TrendingUp" },
   { id: "m2", category: "MARKETING", name: "Social Media", description: "Brand awareness", price: 1500, icon: "Share2" },
   { id: "m3", category: "MARKETING", name: "SEO", description: "Organic visibility", price: 2000, icon: "Search" },
-  { id: "m4", category: "MARKETING", name: "AEO", description: "Answer Engine Optimization", price: 1800, icon: "Target" },
-  { id: "m5", category: "MARKETING", name: "GEO", description: "Generative Engine Opt", price: 3000, icon: "MapPin" },
   { id: "m6", category: "MARKETING", name: "Digital Marketing", description: "Full 360 approach", price: 4000, icon: "Megaphone" },
   
   // CREATIVE
   { id: "c1", category: "CREATIVE", name: "Branding", description: "Identity & positioning", price: 3500, icon: "Palette" },
   { id: "c2", category: "CREATIVE", name: "Graphic Design", description: "Design retainers", price: 1500, icon: "PenTool" },
   { id: "c3", category: "CREATIVE", name: "Animation", description: "Motion graphics", price: 4500, icon: "Video" },
-  { id: "c4", category: "CREATIVE", name: "CGI Ads", description: "3D commercials", price: 8000, icon: "MonitorPlay" },
+  { id: "c4", category: "CREATIVE", name: "Ai Ads", description: "AI-generated commercials", price: 8000, icon: "MonitorPlay" },
   
   // DEVELOPMENT
   { id: "d1", category: "DEVELOPMENT", name: "Web Development", description: "Modern, responsive", price: 6000, icon: "Layout" },

@@ -25,7 +25,7 @@ const plans = [
     description: "Comprehensive package for growing businesses seeking visibility.",
     features: [
       "Custom Website Design",
-      "Advanced SEO & AEO",
+      "Advanced SEO",
       "Social Media Management",
       "Performance Marketing",
       "Weekly Reports & Strategy",
@@ -38,8 +38,8 @@ const plans = [
     description: "All-in-one dominant digital presence for industry leaders.",
     features: [
       "Premium Web App",
-      "Enterprise SEO & GEO",
-      "Full Creative Suite (CGI/Anim)",
+      "Enterprise SEO",
+      "Full Creative Suite (Ai/Anim)",
       "Aggressive Ad Campaigns",
       "Dedicated Account Manager",
     ],
