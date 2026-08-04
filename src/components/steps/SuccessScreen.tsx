@@ -77,7 +77,13 @@ export function SuccessScreen() {
           
           pdf.setFontSize(10);
           pdf.setTextColor(100, 100, 100);
-          pdf.text(s.category, 40, y + 15);
+          
+          let subText = s.category;
+          if (s.selectedOptions && s.selectedOptions.length > 0) {
+            subText += ` | Options: ${s.selectedOptions.join(", ")}`;
+          }
+          
+          pdf.text(subText, 40, y + 15);
           
           y += 35;
           pdf.setFontSize(12);

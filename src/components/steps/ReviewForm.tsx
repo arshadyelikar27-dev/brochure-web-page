@@ -80,11 +80,20 @@ export function ReviewForm() {
                 <p className="text-sm text-foreground-muted uppercase tracking-wider mb-2">Add-on Services</p>
                 <ul className="space-y-3">
                   {selectedServices.map(service => (
-                    <li key={service.id} className="flex justify-between items-center bg-black/5 p-3 rounded-lg">
+                    <li key={service.id} className="flex flex-col gap-2 bg-black/5 p-3 rounded-lg">
                       <div className="flex items-center gap-2 text-foreground/80">
                         <Check className="w-4 h-4 text-primary" />
-                        <span className="text-sm text-foreground">{service.name}</span>
+                        <span className="text-sm font-bold text-foreground">{service.name}</span>
                       </div>
+                      {service.selectedOptions && service.selectedOptions.length > 0 && (
+                        <div className="pl-6 flex flex-wrap gap-1">
+                          {service.selectedOptions.map(opt => (
+                            <span key={opt} className="text-[10px] bg-white text-foreground-muted px-2 py-1 rounded-md border border-black/5">
+                              {opt}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>

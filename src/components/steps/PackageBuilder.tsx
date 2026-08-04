@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useStore, Service, ServiceCategory } from "@/store/useStore";
 import { 
   Megaphone, 
@@ -20,32 +20,32 @@ import {
   Code
 } from "lucide-react";
 
-// Mock data with adjusted prices
 const availableServices: Service[] = [
   // MARKETING
-  { id: "m1", category: "MARKETING", name: "Performance Marketing", description: "Lead Generation", price: 2500, icon: "TrendingUp" },
-  { id: "m2", category: "MARKETING", name: "Social Media", description: "Brand awareness", price: 1500, icon: "Share2" },
-  { id: "m3", category: "MARKETING", name: "SEO", description: "Organic visibility", price: 2000, icon: "Search" },
-  { id: "m6", category: "MARKETING", name: "Digital Marketing", description: "Full 360 approach", price: 4000, icon: "Megaphone" },
+  { id: "m1", category: "MARKETING", name: "Performance Marketing", description: "Lead Generation", icon: "TrendingUp", options: ["Lead Generation", "CRO", "PPC"] },
+  { id: "m2", category: "MARKETING", name: "Social Media", description: "Brand awareness", icon: "Share2", options: ["Post Creating", "Reels Creating", "Community Management"] },
+  { id: "m3", category: "MARKETING", name: "SEO", description: "Organic visibility", icon: "Search", options: ["Keyword Research", "On-Page SEO", "Backlink Building"] },
+  { id: "m6", category: "MARKETING", name: "Digital Marketing", description: "Full 360 approach", icon: "Megaphone", options: ["Strategy Session", "Full Management", "Analytics Setup"] },
   
   // CREATIVE
-  { id: "c1", category: "CREATIVE", name: "Branding", description: "Identity & positioning", price: 3500, icon: "Palette" },
-  { id: "c2", category: "CREATIVE", name: "Graphic Design", description: "Design retainers", price: 1500, icon: "PenTool" },
-  { id: "c3", category: "CREATIVE", name: "Animation", description: "Motion graphics", price: 4500, icon: "Video" },
-  { id: "c4", category: "CREATIVE", name: "Ai Ads", description: "AI-generated commercials", price: 8000, icon: "MonitorPlay" },
+  { id: "c1", category: "CREATIVE", name: "Branding", description: "Identity & positioning", icon: "Palette", options: ["Logo Design", "Brand Guidelines", "Typography & Color"] },
+  { id: "c2", category: "CREATIVE", name: "Graphic Design", description: "Design retainers", icon: "PenTool", options: ["Marketing Assets", "Pitch Decks", "Merchandise"] },
+  { id: "c3", category: "CREATIVE", name: "Animation", description: "Motion graphics", icon: "Video", options: ["2D Explainer", "3D Product Demo", "Logo Animation"] },
+  { id: "c4", category: "CREATIVE", name: "Ai Ads", description: "AI-generated commercials", icon: "MonitorPlay", options: ["Image Generation", "Video Generation", "Script Writing"] },
   
   // DEVELOPMENT
-  { id: "d1", category: "DEVELOPMENT", name: "Web Development", description: "Modern, responsive", price: 6000, icon: "Layout" },
-  { id: "d2", category: "DEVELOPMENT", name: "App Development", description: "iOS & Android", price: 12000, icon: "Smartphone" },
+  { id: "d1", category: "DEVELOPMENT", name: "Web Development", description: "Modern, responsive", icon: "Layout", options: ["Landing Page", "Corporate Website", "E-Commerce"] },
+  { id: "d2", category: "DEVELOPMENT", name: "App Development", description: "iOS & Android", icon: "Smartphone", options: ["iOS Native", "Android Native", "Cross-Platform"] },
   
   // COMMUNICATION
-  { id: "cm1", category: "COMMUNICATION", name: "Email Marketing", description: "Newsletters & automation", price: 1200, icon: "Mail" },
+  { id: "cm1", category: "COMMUNICATION", name: "Email Marketing", description: "Newsletters & automation", icon: "Mail", options: ["Newsletter Setup", "Automation Flows", "Template Design"] },
 ];
 
 const categories = [
   { id: "MARKETING", label: "Digital Marketing", icon: Megaphone },
   { id: "CREATIVE", label: "Creative & Design", icon: PenTool },
   { id: "DEVELOPMENT", label: "Web & App Development", icon: Code },
+  { id: "COMMUNICATION", label: "Communication & Email", icon: Mail },
 ];
 
 const iconMap: Record<string, React.ElementType> = {
@@ -54,7 +54,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export function PackageBuilder() {
-  const { selectedServices, toggleService, setStep } = useStore();
+  const { selectedServices, toggleService, toggleServiceOption, setStep } = useStore();
 
   return (
     <div className="flex flex-col items-center justify-start min-h-[85vh] w-full px-4 pt-16 md:py-12 pb-32 md:pb-36">
@@ -86,9 +86,10 @@ export function PackageBuilder() {
                 <div className="h-[1px] flex-grow bg-black/5"></div>
               </motion.h3>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
                 {categoryServices.map((service, index) => {
-                  const isSelected = selectedServices.some(s => s.id === service.id);
+                  const selectedServiceData = selectedServices.find(s => s.id === service.id);
+                  const isSelected = !!selectedServiceData;
                   const Icon = iconMap[service.icon];
 
                   return (
@@ -97,13 +98,17 @@ export function PackageBuilder() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: (catIndex * 0.1) + (index * 0.05) }}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => toggleService(service as Service)}
-                      className={`relative cursor-pointer flex flex-col p-3 md:p-4 rounded-xl border transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md ${
+                      whileHover={{ scale: isSelected ? 1 : 1.02, y: isSelected ? 0 : -2 }}
+                      whileTap={{ scale: isSelected ? 1 : 0.98 }}
+                      onClick={() => {
+                        if (!isSelected) {
+                          toggleService(service as Service);
+                        }
+                      }}
+                      className={`relative flex flex-col p-3 md:p-4 rounded-xl border transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md ${
                         isSelected 
-                          ? "border-primary bg-white shadow-primary/10" 
-                          : "border-black/5 bg-slate-50 hover:border-black/10 hover:bg-white"
+                          ? "border-primary bg-white shadow-primary/10 cursor-default" 
+                          : "border-black/5 bg-slate-50 hover:border-black/10 hover:bg-white cursor-pointer"
                       }`}
                     >
                       {isSelected && (
@@ -115,27 +120,75 @@ export function PackageBuilder() {
                           transition={{ duration: 0.3 }}
                         />
                       )}
+                      
+                      {/* Clickable Header Area (if selected, clicking header toggles it off) */}
+                      <div 
+                        className={`w-full flex flex-col h-full ${isSelected ? 'cursor-pointer' : ''}`}
+                        onClick={(e) => {
+                          if (isSelected) {
+                            e.stopPropagation();
+                            toggleService(service as Service);
+                          }
+                        }}
+                      >
+                        <div className="flex justify-between items-start mb-2 md:mb-3">
+                          <div className={`p-1.5 md:p-2 rounded-lg ${isSelected ? 'bg-primary/10 text-primary' : 'bg-black/5 text-foreground'}`}>
+                            {Icon && <Icon className="w-3 h-3 md:w-4 md:h-4" />}
+                          </div>
+                        </div>
 
-                      <div className="flex justify-between items-start mb-2 md:mb-3">
-                        <div className={`p-1.5 md:p-2 rounded-lg ${isSelected ? 'bg-primary/10 text-primary' : 'bg-black/5 text-foreground'}`}>
-                          {Icon && <Icon className="w-3 h-3 md:w-4 md:h-4" />}
+                        <h4 className="text-xs md:text-sm font-bold mb-1 leading-tight text-foreground">{service.name}</h4>
+                        <p className="text-[10px] md:text-xs text-foreground-muted mb-3 md:mb-4 line-clamp-2">{service.description}</p>
+
+                        <div className="mt-auto flex items-center justify-between">
+                          <span className={`text-[9px] md:text-[10px] font-medium uppercase tracking-wide ${isSelected ? 'text-primary font-bold' : 'text-foreground-muted'}`}>
+                            {isSelected ? 'Selected' : 'Add'}
+                          </span>
+                          
+                          <div className={`w-4 h-4 md:w-5 md:h-5 rounded-full border flex items-center justify-center transition-colors ${
+                            isSelected ? 'border-primary bg-primary text-white' : 'border-black/10 text-foreground-muted'
+                          }`}>
+                            {isSelected ? <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}><Check className="w-2.5 h-2.5 md:w-3 md:h-3" /></motion.div> : <span className="text-xs md:text-sm leading-none">+</span>}
+                          </div>
                         </div>
                       </div>
 
-                      <h4 className="text-xs md:text-sm font-bold mb-1 leading-tight text-foreground">{service.name}</h4>
-                      <p className="text-[10px] md:text-xs text-foreground-muted mb-3 md:mb-4 line-clamp-2">{service.description}</p>
-
-                      <div className="mt-auto flex items-center justify-between">
-                        <span className={`text-[9px] md:text-[10px] font-medium uppercase tracking-wide ${isSelected ? 'text-primary font-bold' : 'text-foreground-muted'}`}>
-                          {isSelected ? 'Selected' : 'Add'}
-                        </span>
-                        
-                        <div className={`w-4 h-4 md:w-5 md:h-5 rounded-full border flex items-center justify-center transition-colors ${
-                          isSelected ? 'border-primary bg-primary text-white' : 'border-black/10 text-foreground-muted'
-                        }`}>
-                          {isSelected ? <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}><Check className="w-2.5 h-2.5 md:w-3 md:h-3" /></motion.div> : <span className="text-xs md:text-sm leading-none">+</span>}
-                        </div>
-                      </div>
+                      <AnimatePresence>
+                        {isSelected && service.options && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="overflow-hidden w-full"
+                          >
+                            <div className="mt-4 pt-4 border-t border-black/10 flex flex-col gap-2">
+                              {service.options.map(option => {
+                                const isOptionSelected = selectedServiceData?.selectedOptions?.includes(option);
+                                return (
+                                  <div
+                                    key={option}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toggleServiceOption(service.id, option);
+                                    }}
+                                    className={`flex items-center gap-2 p-2 rounded-lg text-xs cursor-pointer transition-colors ${
+                                      isOptionSelected ? 'bg-primary text-white' : 'bg-black/5 hover:bg-black/10 text-foreground'
+                                    }`}
+                                  >
+                                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${
+                                      isOptionSelected ? 'border-white bg-primary' : 'border-black/20 bg-white'
+                                    }`}>
+                                      {isOptionSelected && <Check className="w-2.5 h-2.5 text-white" />}
+                                    </div>
+                                    <span>{option}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </motion.div>
                   );
                 })}

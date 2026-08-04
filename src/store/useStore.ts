@@ -10,6 +10,11 @@ export interface Service {
   name: string;
   description: string;
   icon: string;
+  options?: string[];
+}
+
+export interface SelectedService extends Service {
+  selectedOptions: string[];
 }
 
 export interface ClientDetails {
@@ -32,8 +37,9 @@ interface StoreState {
   selectedPlan: PlanType;
   setSelectedPlan: (plan: PlanType) => void;
   
-  selectedServices: Service[];
+  selectedServices: SelectedService[];
   toggleService: (service: Service) => void;
+  toggleServiceOption: (serviceId: string, option: string) => void;
   
   clientDetails: ClientDetails;
   setClientDetails: (details: Partial<ClientDetails>) => void;
@@ -85,8 +91,24 @@ export const useStore = create<StoreState>((set, get) => ({
     if (exists) {
       return { selectedServices: state.selectedServices.filter((s) => s.id !== service.id) };
     } else {
-      return { selectedServices: [...state.selectedServices, service] };
+      return { selectedServices: [...state.selectedServices, { ...service, selectedOptions: [] }] };
     }
+  }),
+  toggleServiceOption: (serviceId, option) => set((state) => {
+    return {
+      selectedServices: state.selectedServices.map(service => {
+        if (service.id === serviceId) {
+          const hasOption = service.selectedOptions.includes(option);
+          return {
+            ...service,
+            selectedOptions: hasOption 
+              ? service.selectedOptions.filter(o => o !== option)
+              : [...service.selectedOptions, option]
+          };
+        }
+        return service;
+      })
+    };
   }),
   
   clientDetails: initialClientDetails,
