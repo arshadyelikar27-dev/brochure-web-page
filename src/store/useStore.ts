@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type PlanType = 'GOOD' | 'BETTER' | 'BEST' | null;
+export type PlanType = 'GOOD' | 'BETTER' | 'BEST' | 'CUSTOM' | null;
 
 export type ServiceCategory = 'MARKETING' | 'CREATIVE' | 'DEVELOPMENT' | 'COMMUNICATION';
 
@@ -9,7 +9,6 @@ export interface Service {
   category: ServiceCategory;
   name: string;
   description: string;
-  price: number;
   icon: string;
 }
 
@@ -39,21 +38,14 @@ interface StoreState {
   clientDetails: ClientDetails;
   setClientDetails: (details: Partial<ClientDetails>) => void;
   
-  getSubtotal: () => number;
-  getGrandTotal: () => number;
   getTimeline: () => string;
 }
-
-export const basePlanPrices = {
-  GOOD: 5000,
-  BETTER: 12000,
-  BEST: 25000,
-};
 
 export const basePlanTimelines = {
   GOOD: '14 Days',
   BETTER: '30 Days',
   BEST: '45 Days',
+  CUSTOM: 'TBD',
 };
 
 const initialClientDetails = {
@@ -102,25 +94,15 @@ export const useStore = create<StoreState>((set, get) => ({
     clientDetails: { ...state.clientDetails, ...details } 
   })),
   
-  getSubtotal: () => {
-    const { selectedPlan, selectedServices } = get();
-    let total = 0;
-    if (selectedPlan) {
-      total += basePlanPrices[selectedPlan];
-    }
-    total += selectedServices.reduce((sum, service) => sum + service.price, 0);
-    return total;
-  },
-  
-  getGrandTotal: () => {
-    return get().getSubtotal(); // No GST
-  },
-  
   getTimeline: () => {
     const { selectedPlan, selectedServices } = get();
     if (!selectedPlan) return 'TBD';
     
-    // Simplistic timeline calculation
+    if (selectedPlan === 'CUSTOM') {
+      if (selectedServices.length === 0) return 'TBD';
+      return `${selectedServices.length * 3} Days`;
+    }
+
     let baseDays = parseInt(basePlanTimelines[selectedPlan]);
     let extraDays = selectedServices.length * 2; 
     

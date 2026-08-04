@@ -1,15 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useStore, PlanType, basePlanPrices } from "@/store/useStore";
-import { Check, Star } from "lucide-react";
+import { useStore, PlanType } from "@/store/useStore";
+import { Check, Star, Settings2 } from "lucide-react";
 
 const plans = [
   {
     id: "GOOD" as PlanType,
     name: "Starter",
     label: "GOOD",
-    price: basePlanPrices.GOOD,
     description: "Perfect for small businesses starting their digital journey.",
     features: [
       "Basic Website Setup",
@@ -23,7 +22,6 @@ const plans = [
     name: "Growth",
     label: "BETTER",
     isPopular: true,
-    price: basePlanPrices.BETTER,
     description: "Comprehensive package for growing businesses seeking visibility.",
     features: [
       "Custom Website Design",
@@ -37,7 +35,6 @@ const plans = [
     id: "BEST" as PlanType,
     name: "Scale",
     label: "BEST",
-    price: basePlanPrices.BEST,
     description: "All-in-one dominant digital presence for industry leaders.",
     features: [
       "Premium Web App",
@@ -50,10 +47,16 @@ const plans = [
 ];
 
 export function PlanSelection() {
-  const { selectedPlan, setSelectedPlan, nextStep } = useStore();
+  const { selectedPlan, setSelectedPlan, setStep } = useStore();
 
-  const handleSelect = (id: PlanType) => {
+  const handleSelectStandardPlan = (id: PlanType) => {
     setSelectedPlan(id);
+    setStep(3); // Skip straight to Review
+  };
+
+  const handleSelectCustomPlan = () => {
+    setSelectedPlan("CUSTOM");
+    setStep(2); // Go to Package Builder for add-ons
   };
 
   return (
@@ -65,11 +68,11 @@ export function PlanSelection() {
       >
         <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3">Choose Your <span className="text-gradient">Plan</span></h2>
         <p className="text-foreground-muted text-xs md:text-sm max-w-[280px] md:max-w-xl mx-auto leading-relaxed">
-          Select a base plan to start building your custom package.
+          Select a base plan or build a custom package for your specific needs.
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 max-w-5xl w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 max-w-5xl w-full mb-6">
         {plans.map((plan, index) => {
           const isSelected = selectedPlan === plan.id;
           const isOtherSelected = selectedPlan && selectedPlan !== plan.id;
@@ -77,7 +80,7 @@ export function PlanSelection() {
           return (
             <motion.div
               key={plan.id}
-              onClick={() => handleSelect(plan.id)}
+              onClick={() => handleSelectStandardPlan(plan.id)}
               initial={{ opacity: 0, y: 50 }}
               animate={{ 
                 opacity: isOtherSelected ? 0.6 : 1, 
@@ -99,17 +102,11 @@ export function PlanSelection() {
                 </div>
               )}
 
-              <div className="flex justify-between items-start mb-2 md:mb-6 pointer-events-none">
-                <div>
-                  <div className="text-[9px] md:text-xs font-semibold tracking-widest text-foreground-muted mb-0.5 md:mb-1 uppercase">
-                    {plan.label}
-                  </div>
-                  <h3 className="text-lg md:text-2xl font-bold text-foreground">{plan.name}</h3>
+              <div className="mb-2 md:mb-6 pointer-events-none">
+                <div className="text-[9px] md:text-xs font-semibold tracking-widest text-foreground-muted mb-0.5 md:mb-1 uppercase">
+                  {plan.label}
                 </div>
-                <div className="text-right">
-                  <span className="text-lg md:text-3xl font-bold block md:inline leading-none text-foreground">₹{plan.price.toLocaleString()}</span>
-                  <span className="text-[10px] md:text-sm text-foreground-muted block md:inline md:ml-1 mt-0.5">/mo</span>
-                </div>
+                <h3 className="text-lg md:text-2xl font-bold text-foreground">{plan.name}</h3>
               </div>
 
               <p className="text-[11px] md:text-sm text-foreground-muted mb-3 md:mb-6 pointer-events-none line-clamp-2 md:line-clamp-none">
@@ -142,6 +139,35 @@ export function PlanSelection() {
           );
         })}
       </div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="max-w-5xl w-full"
+      >
+        <button
+          onClick={handleSelectCustomPlan}
+          className={`w-full flex items-center justify-between p-4 md:p-6 rounded-2xl md:rounded-3xl border transition-all duration-300 ${
+            selectedPlan === "CUSTOM"
+              ? "border-primary bg-primary/5 shadow-xl shadow-primary/10"
+              : "border-black/10 bg-white shadow-sm hover:shadow-md hover:border-primary/50"
+          }`}
+        >
+          <div className="flex items-center gap-3 md:gap-4 text-left">
+            <div className={`p-3 md:p-4 rounded-xl ${selectedPlan === "CUSTOM" ? "bg-primary text-white" : "bg-black/5 text-foreground"}`}>
+              <Settings2 className="w-5 h-5 md:w-6 md:h-6" />
+            </div>
+            <div>
+              <h3 className="text-sm md:text-lg font-bold text-foreground mb-0.5">Customizable Plan</h3>
+              <p className="text-xs md:text-sm text-foreground-muted">Build a custom package tailored specifically to your goals.</p>
+            </div>
+          </div>
+          <div className={`text-xs md:text-sm font-bold px-4 py-2 rounded-lg ${selectedPlan === "CUSTOM" ? "bg-primary text-white" : "bg-black/5 text-foreground"}`}>
+            Customize Now
+          </div>
+        </button>
+      </motion.div>
     </div>
   );
 }

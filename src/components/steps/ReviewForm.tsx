@@ -2,15 +2,13 @@
 
 import { motion } from "framer-motion";
 import { useStore } from "@/store/useStore";
-import { Check, Edit2, Building, User, Mail, Phone, Target, Wallet, FileText } from "lucide-react";
+import { Check, Edit2, Building, User, Mail, Phone, Target, FileText } from "lucide-react";
 import { useState } from "react";
 
 export function ReviewForm() {
   const { 
     selectedPlan, 
     selectedServices, 
-    getSubtotal, 
-    getGrandTotal, 
     getTimeline,
     clientDetails,
     setClientDetails,
@@ -57,7 +55,10 @@ export function ReviewForm() {
           className="bg-white shadow-xl shadow-black/5 p-8 rounded-3xl border border-black/5 h-fit"
         >
           <div className="flex items-center justify-between mb-8 pb-6 border-b border-black/5">
-            <h3 className="text-2xl font-bold text-foreground">Package Summary</h3>
+            <h3 className="text-2xl font-bold text-foreground flex items-center gap-2">
+              <span className="bg-primary/10 text-primary p-2 rounded-xl"><FileText className="w-5 h-5" /></span>
+              Package Summary
+            </h3>
             <button onClick={() => setStep(1)} className="text-primary text-sm flex items-center gap-1 hover:underline">
               <Edit2 className="w-3 h-3" /> Edit
             </button>
@@ -67,7 +68,9 @@ export function ReviewForm() {
             <div>
               <p className="text-sm text-foreground-muted uppercase tracking-wider mb-2">Base Plan</p>
               <div className="flex justify-between items-center">
-                <p className="font-bold text-xl text-foreground">{selectedPlan}</p>
+                <p className="font-bold text-xl text-foreground">
+                  {selectedPlan === 'CUSTOM' ? 'Customizable Plan' : selectedPlan}
+                </p>
                 <Check className="w-5 h-5 text-primary" />
               </div>
             </div>
@@ -78,8 +81,10 @@ export function ReviewForm() {
                 <ul className="space-y-3">
                   {selectedServices.map(service => (
                     <li key={service.id} className="flex justify-between items-center bg-black/5 p-3 rounded-lg">
-                      <span className="text-sm text-foreground">{service.name}</span>
-                      <span className="text-sm font-semibold text-foreground">₹{service.price.toLocaleString()}</span>
+                      <div className="flex items-center gap-2 text-foreground/80">
+                        <Check className="w-4 h-4 text-primary" />
+                        <span className="text-sm text-foreground">{service.name}</span>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -90,17 +95,9 @@ export function ReviewForm() {
           <div className="bg-black/5 p-6 rounded-2xl border border-black/5 space-y-4">
             <div className="flex justify-between text-sm">
               <span className="text-foreground-muted">Timeline Estimation</span>
-              <span className="text-foreground">{getTimeline()}</span>
+              <span className="text-foreground font-semibold">{getTimeline()}</span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-foreground-muted">Subtotal</span>
-              <span className="text-foreground">₹{getSubtotal().toLocaleString()}</span>
-            </div>
-            <div className="h-px w-full bg-black/10 my-2" />
-            <div className="flex justify-between items-center">
-              <span className="text-lg font-bold text-primary">Total Investment</span>
-              <span className="text-2xl font-bold text-foreground">₹{getGrandTotal().toLocaleString()}</span>
-            </div>
+            <p className="text-[10px] text-foreground-muted text-right mt-1">Timeline is subject to final scoping</p>
           </div>
         </motion.div>
 

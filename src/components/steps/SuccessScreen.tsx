@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle2, Download, MessageCircle, ExternalLink } from "lucide-react";
+import { CheckCircle, Download, MessageCircle, ExternalLink } from "lucide-react";
 import { useStore } from "@/store/useStore";
 import { useState, useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
 export function SuccessScreen() {
-  const { clientDetails, selectedPlan, selectedServices, getSubtotal, getGrandTotal, getTimeline } = useStore();
+  const { clientDetails, selectedPlan, selectedServices, getTimeline } = useStore();
   const [isGenerating, setIsGenerating] = useState(false);
   const pdfRef = useRef<HTMLDivElement>(null);
 
@@ -58,10 +58,7 @@ export function SuccessScreen() {
       y += 30;
       pdf.setFontSize(14);
       pdf.setTextColor(0, 0, 0);
-      pdf.text(selectedPlan || "None", 40, y);
-      
-      const planPrice = getSubtotal() - selectedServices.reduce((acc, s) => acc + s.price, 0);
-      pdf.text(`Rs. ${planPrice.toLocaleString()}`, 550, y, { align: "right" });
+      pdf.text(selectedPlan === 'CUSTOM' ? 'Customizable Plan' : (selectedPlan || "None"), 40, y);
 
       // Services
       if (selectedServices.length > 0) {
@@ -77,9 +74,6 @@ export function SuccessScreen() {
           pdf.setFont("helvetica", "bold");
           pdf.setTextColor(0, 0, 0);
           pdf.text(s.name, 40, y);
-          
-          pdf.setFont("helvetica", "normal");
-          pdf.text(`Rs. ${s.price.toLocaleString()}`, 550, y, { align: "right" });
           
           pdf.setFontSize(10);
           pdf.setTextColor(100, 100, 100);
@@ -102,15 +96,7 @@ export function SuccessScreen() {
       pdf.setTextColor(0, 0, 0);
       pdf.text(getTimeline(), 550, y, { align: "right" });
 
-      y += 30;
-      pdf.line(40, y, 550, y);
-      y += 30;
-
-      pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(16);
-      pdf.setTextColor(...primaryColor);
-      pdf.text("Total Investment", 40, y);
-      pdf.text(`Rs. ${getGrandTotal().toLocaleString()}`, 550, y, { align: "right" });
+      y += 40;
 
       // Footer
       pdf.setFont("helvetica", "normal");

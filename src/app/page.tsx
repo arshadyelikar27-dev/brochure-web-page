@@ -2,7 +2,6 @@
 
 import { useStore } from "@/store/useStore";
 import { Header } from "@/components/Header";
-import { StickyCart } from "@/components/StickyCart";
 import { OpeningAnimation } from "@/components/steps/OpeningAnimation";
 import { PlanSelection } from "@/components/steps/PlanSelection";
 import { PackageBuilder } from "@/components/steps/PackageBuilder";
@@ -84,8 +83,6 @@ export default function Home() {
           )}
         </AnimatePresence>
       </div>
-
-      <StickyCart />
     </main>
   );
 }

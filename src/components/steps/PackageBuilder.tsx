@@ -48,26 +48,19 @@ const iconMap: Record<string, React.ElementType> = {
   Palette, PenTool, Video, MonitorPlay, Layout, Smartphone, Mail
 };
 
-const categories: { id: ServiceCategory, label: string }[] = [
-  { id: "MARKETING", label: "Marketing" },
-  { id: "CREATIVE", label: "Creative" },
-  { id: "DEVELOPMENT", label: "Development" },
-  { id: "COMMUNICATION", label: "Communication" },
-];
-
 export function PackageBuilder() {
-  const { selectedServices, toggleService, nextStep } = useStore();
+  const { selectedServices, toggleService, setStep } = useStore();
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-[85vh] w-full px-3 md:px-4 pt-16 md:py-8 pb-28 md:pb-32">
+    <div className="flex flex-col items-center justify-start min-h-[85vh] w-full px-4 pt-16 md:py-12 pb-32 md:pb-36">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-6 md:mb-8"
+        className="text-center mb-8 md:mb-12"
       >
-        <h2 className="text-2xl md:text-4xl font-bold mb-2">Customize <span className="text-gradient">Services</span></h2>
-        <p className="text-foreground-muted text-xs md:text-base max-w-[280px] md:max-w-xl mx-auto">
-          Select any additional services you need.
+        <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4 text-foreground">Build Your <span className="text-gradient">Custom Package</span></h2>
+        <p className="text-foreground-muted text-xs md:text-base max-w-2xl mx-auto">
+          Select the specific services you need to achieve your goals.
         </p>
       </motion.div>
 
@@ -101,14 +94,13 @@ export function PackageBuilder() {
                       transition={{ delay: (catIndex * 0.1) + (index * 0.05) }}
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={() => toggleService(service)}
+                      onClick={() => toggleService(service as Service)}
                       className={`relative cursor-pointer flex flex-col p-3 md:p-4 rounded-xl border transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md ${
                         isSelected 
                           ? "border-primary bg-white shadow-primary/10" 
                           : "border-black/5 bg-slate-50 hover:border-black/10 hover:bg-white"
                       }`}
                     >
-                      {/* Ripple background effect when selected */}
                       {isSelected && (
                         <motion.div 
                           layoutId={`ripple-${service.id}`}
@@ -122,10 +114,6 @@ export function PackageBuilder() {
                       <div className="flex justify-between items-start mb-2 md:mb-3">
                         <div className={`p-1.5 md:p-2 rounded-lg ${isSelected ? 'bg-primary/10 text-primary' : 'bg-black/5 text-foreground'}`}>
                           {Icon && <Icon className="w-3 h-3 md:w-4 md:h-4" />}
-                        </div>
-                        <div className="text-right">
-                          <span className="text-xs md:text-sm font-bold block text-foreground">₹{service.price.toLocaleString()}</span>
-                          <span className="text-[8px] md:text-[9px] text-foreground-muted uppercase tracking-wider">Starting</span>
                         </div>
                       </div>
 
@@ -150,17 +138,19 @@ export function PackageBuilder() {
             </div>
           );
         })}
-      </div>
-
-      <div className="fixed bottom-24 md:hidden right-4 z-40">
-         <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={nextStep}
-            className="px-5 py-2.5 bg-primary text-white text-sm rounded-full font-semibold shadow-lg shadow-primary/50 flex items-center gap-2"
-          >
-            Review Package <Check className="w-3.5 h-3.5" />
-          </motion.button>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="mt-12 w-full max-w-sm"
+      >
+        <button
+          onClick={() => setStep(3)}
+          className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20"
+        >
+          Review Package <Check className="w-5 h-5" />
+        </button>
+      </motion.div>
     </div>
   );
 }
