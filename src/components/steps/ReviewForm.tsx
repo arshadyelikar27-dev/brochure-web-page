@@ -129,29 +129,29 @@ export function ReviewForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm text-foreground-muted flex items-center gap-2"><User className="w-4 h-4"/> Full Name</label>
-                <input required type="text" name="name" value={clientDetails.name} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-foreground" placeholder="John Doe" />
+                <input required type="text" name="name" value={clientDetails.name} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-foreground" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-foreground-muted flex items-center gap-2"><Building className="w-4 h-4"/> Business Name</label>
-                <input required type="text" name="businessName" value={clientDetails.businessName} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-foreground" placeholder="Acme Corp" />
+                <input required type="text" name="businessName" value={clientDetails.businessName} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-foreground" />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm text-foreground-muted flex items-center gap-2"><Mail className="w-4 h-4"/> Email</label>
-                <input required type="email" name="email" value={clientDetails.email} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-foreground" placeholder="john@example.com" />
+                <input required type="email" name="email" value={clientDetails.email} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-foreground" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-foreground-muted flex items-center gap-2"><Phone className="w-4 h-4"/> Phone Number</label>
-                <input required type="tel" name="phone" value={clientDetails.phone} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-foreground" placeholder="+91 9876543210" />
+                <input required type="tel" name="phone" value={clientDetails.phone} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-foreground" />
               </div>
             </div>
 
 
             <div className="space-y-2">
               <label className="text-sm text-foreground-muted flex items-center gap-2"><FileText className="w-4 h-4"/> Extra Requirements</label>
-              <textarea name="extraRequirements" value={clientDetails.extraRequirements} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors min-h-[100px] text-foreground" placeholder="Any specific details you want us to know..." />
+              <textarea name="extraRequirements" value={clientDetails.extraRequirements} onChange={handleChange} className="w-full bg-black/5 border border-black/5 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors min-h-[100px] text-foreground" />
             </div>
 
             <motion.button
