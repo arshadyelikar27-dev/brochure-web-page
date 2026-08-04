@@ -6,12 +6,17 @@ export type ServiceCategory = 'MARKETING' | 'CREATIVE' | 'DEVELOPMENT' | 'COMMUN
 
 export type ConfigType = 'QUANTITY' | 'TIER';
 
-export interface QuantityConfig {
-  type: 'QUANTITY';
-  unit: string;
+export interface QuantityField {
+  id: string;
+  label: string;
   min: number;
   max: number;
   step: number;
+}
+
+export interface QuantityConfig {
+  type: 'QUANTITY';
+  fields: QuantityField[];
 }
 
 export interface TierConfig {
@@ -29,7 +34,7 @@ export interface Service {
 }
 
 export interface SelectedService extends Service {
-  selectedValue: number | string;
+  selectedValue: Record<string, number> | string;
 }
 
 export interface ClientDetails {
@@ -54,7 +59,7 @@ interface StoreState {
   
   selectedServices: SelectedService[];
   toggleService: (service: Service) => void;
-  updateServiceValue: (serviceId: string, value: number | string) => void;
+  updateServiceValue: (serviceId: string, value: number | string, fieldId?: string) => void;
   
   clientDetails: ClientDetails;
   setClientDetails: (details: Partial<ClientDetails>) => void;
@@ -80,10 +85,10 @@ const initialClientDetails = {
 };
 
 export const useStore = create<StoreState>((set, get) => ({
-  step: 0, // 0: Welcome, 1: Plan, 2: Builder, 3: Review, 4: Success
+  step: 0,
   setStep: (step) => set({ step }),
   nextStep: () => set((state) => ({ step: Math.min(state.step + 1, 4) })),
-  prevStep: () => set((state) => ({ step: Math.max(state.step - 1, 1) })), // Don't go back to animation (0)
+  prevStep: () => set((state) => ({ step: Math.max(state.step - 1, 1) })),
   reset: () => set({
     step: 0,
     selectedPlan: null,
@@ -93,7 +98,6 @@ export const useStore = create<StoreState>((set, get) => ({
   
   selectedPlan: null,
   setSelectedPlan: (plan) => set((state) => {
-    // If they change their plan, clear any add-ons they had selected
     if (state.selectedPlan !== plan) {
       return { selectedPlan: plan, selectedServices: [] };
     }
@@ -106,18 +110,23 @@ export const useStore = create<StoreState>((set, get) => ({
     if (exists) {
       return { selectedServices: state.selectedServices.filter((s) => s.id !== service.id) };
     } else {
-      // Default value: min if quantity, first tier if tier
-      const defaultValue = service.config.type === 'QUANTITY' 
-        ? service.config.min 
-        : service.config.tiers[0];
-        
+      let defaultValue: any;
+      if (service.config.type === 'QUANTITY') {
+        defaultValue = {};
+        service.config.fields.forEach(f => defaultValue[f.id] = f.min);
+      } else {
+        defaultValue = service.config.tiers[0];
+      }
       return { selectedServices: [...state.selectedServices, { ...service, selectedValue: defaultValue }] };
     }
   }),
-  updateServiceValue: (serviceId, value) => set((state) => {
+  updateServiceValue: (serviceId, value, fieldId) => set((state) => {
     return {
       selectedServices: state.selectedServices.map(service => {
         if (service.id === serviceId) {
+          if (service.config.type === 'QUANTITY' && fieldId) {
+             return { ...service, selectedValue: { ...(service.selectedValue as Record<string, number>), [fieldId]: value } };
+          }
           return { ...service, selectedValue: value };
         }
         return service;
@@ -139,7 +148,7 @@ export const useStore = create<StoreState>((set, get) => ({
       return `${selectedServices.length * 3} Days`;
     }
 
-    let baseDays = parseInt(basePlanTimelines[selectedPlan]);
+    let baseDays = parseInt(basePlanTimelines[selectedPlan as keyof typeof basePlanTimelines] || '0');
     let extraDays = selectedServices.length * 2; 
     
     return `${baseDays + extraDays} Days`;

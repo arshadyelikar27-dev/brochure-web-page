@@ -86,11 +86,20 @@ export function ReviewForm() {
                         <span className="text-sm font-bold text-foreground">{service.name}</span>
                       </div>
                       <div className="pl-6 flex flex-wrap gap-1">
-                        <span className="text-[10px] bg-white text-foreground-muted px-2 py-1 rounded-md border border-black/5 font-semibold uppercase tracking-wide">
-                          {service.config?.type === 'QUANTITY' 
-                            ? `${service.selectedValue} ${service.config.unit}`
-                            : `${service.selectedValue} Tier`}
-                        </span>
+                        {service.config?.type === 'QUANTITY' ? (
+                          service.config.fields.map(field => {
+                            const val = (service.selectedValue as Record<string, number>)[field.id] || field.min;
+                            return (
+                              <span key={field.id} className="text-[10px] bg-white text-foreground-muted px-2 py-1 rounded-md border border-black/5 font-semibold uppercase tracking-wide">
+                                {val} {field.label}
+                              </span>
+                            );
+                          })
+                        ) : (
+                          <span className="text-[10px] bg-white text-foreground-muted px-2 py-1 rounded-md border border-black/5 font-semibold uppercase tracking-wide">
+                            {service.selectedValue as string} Tier
+                          </span>
+                        )}
                       </div>
                     </li>
                   ))}

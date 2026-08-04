@@ -25,22 +25,22 @@ import {
 const availableServices: Service[] = [
   // MARKETING
   { id: "m1", category: "MARKETING", name: "Performance Marketing", description: "Lead Generation", icon: "TrendingUp", config: { type: "TIER", tiers: ["Basic", "Advanced", "Aggressive"] } },
-  { id: "m2", category: "MARKETING", name: "Social Media", description: "Brand awareness", icon: "Share2", config: { type: "QUANTITY", unit: "Posts/Reels", min: 4, max: 60, step: 1 } },
+  { id: "m2", category: "MARKETING", name: "Social Media", description: "Brand awareness", icon: "Share2", config: { type: "QUANTITY", fields: [{ id: "posts", label: "Posts", min: 1, max: 30, step: 1 }, { id: "reels", label: "Reels", min: 1, max: 30, step: 1 }] } },
   { id: "m3", category: "MARKETING", name: "SEO", description: "Organic visibility", icon: "Search", config: { type: "TIER", tiers: ["Local", "National", "Enterprise"] } },
   { id: "m6", category: "MARKETING", name: "Digital Marketing", description: "Full 360 approach", icon: "Megaphone", config: { type: "TIER", tiers: ["Starter", "Growth", "Dominance"] } },
   
   // CREATIVE
   { id: "c1", category: "CREATIVE", name: "Branding", description: "Identity & positioning", icon: "Palette", config: { type: "TIER", tiers: ["Logo Only", "Full Identity", "Brand Book"] } },
-  { id: "c2", category: "CREATIVE", name: "Graphic Design", description: "Design retainers", icon: "PenTool", config: { type: "QUANTITY", unit: "Assets", min: 1, max: 100, step: 1 } },
-  { id: "c3", category: "CREATIVE", name: "Animation", description: "Motion graphics", icon: "Video", config: { type: "QUANTITY", unit: "Videos", min: 1, max: 10, step: 1 } },
-  { id: "c4", category: "CREATIVE", name: "Ai Ads", description: "AI-generated commercials", icon: "MonitorPlay", config: { type: "QUANTITY", unit: "Creatives", min: 1, max: 20, step: 1 } },
+  { id: "c2", category: "CREATIVE", name: "Graphic Design", description: "Design retainers", icon: "PenTool", config: { type: "QUANTITY", fields: [{ id: "assets", label: "Assets", min: 1, max: 100, step: 1 }] } },
+  { id: "c3", category: "CREATIVE", name: "Animation", description: "Motion graphics", icon: "Video", config: { type: "QUANTITY", fields: [{ id: "videos", label: "Videos", min: 1, max: 10, step: 1 }] } },
+  { id: "c4", category: "CREATIVE", name: "Ai Ads", description: "AI-generated commercials", icon: "MonitorPlay", config: { type: "QUANTITY", fields: [{ id: "image", label: "Image Gen", min: 1, max: 20, step: 1 }, { id: "video", label: "Video Gen", min: 1, max: 20, step: 1 }] } },
   
   // DEVELOPMENT
   { id: "d1", category: "DEVELOPMENT", name: "Web Development", description: "Modern, responsive", icon: "Layout", config: { type: "TIER", tiers: ["Landing Page", "Corporate Site", "E-Commerce"] } },
   { id: "d2", category: "DEVELOPMENT", name: "App Development", description: "iOS & Android", icon: "Smartphone", config: { type: "TIER", tiers: ["MVP", "Standard Native", "Enterprise"] } },
   
   // COMMUNICATION
-  { id: "cm1", category: "COMMUNICATION", name: "Email Marketing", description: "Newsletters & automation", icon: "Mail", config: { type: "QUANTITY", unit: "Newsletters", min: 1, max: 10, step: 1 } },
+  { id: "cm1", category: "COMMUNICATION", name: "Email Marketing", description: "Newsletters & automation", icon: "Mail", config: { type: "QUANTITY", fields: [{ id: "newsletters", label: "Newsletters", min: 1, max: 10, step: 1 }] } },
 ];
 
 const categories = [
@@ -148,35 +148,40 @@ export function PackageBuilder() {
                             className="w-full md:w-auto md:!mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-black/5 flex items-center justify-start md:justify-end shrink-0 md:!h-auto md:!opacity-100 md:!w-auto md:!scale-100"
                           >
                             {service.config.type === "QUANTITY" ? (
-                              <div className="flex flex-col items-start md:items-end gap-1">
-                                <span className="text-[10px] text-foreground-muted uppercase font-bold tracking-wide">{service.config.unit}</span>
-                                <div className="flex items-center gap-3 bg-white border border-black/10 rounded-lg p-1 shadow-sm">
-                                  <button 
-                                    onClick={() => {
-                                      const currentVal = selectedServiceData.selectedValue as number;
-                                      if (currentVal > service.config.min) {
-                                        updateServiceValue(service.id, currentVal - service.config.step);
-                                      }
-                                    }}
-                                    className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-black/5 text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                                    disabled={(selectedServiceData.selectedValue as number) <= service.config.min}
-                                  >
-                                    <Minus className="w-4 h-4" />
-                                  </button>
-                                  <span className="w-8 text-center font-bold text-sm select-none text-foreground">{selectedServiceData.selectedValue}</span>
-                                  <button 
-                                    onClick={() => {
-                                      const currentVal = selectedServiceData.selectedValue as number;
-                                      if (currentVal < service.config.max) {
-                                        updateServiceValue(service.id, currentVal + service.config.step);
-                                      }
-                                    }}
-                                    className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-black/5 text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                                    disabled={(selectedServiceData.selectedValue as number) >= service.config.max}
-                                  >
-                                    <Plus className="w-4 h-4" />
-                                  </button>
-                                </div>
+                              <div className="flex flex-wrap md:flex-nowrap gap-4 md:gap-6">
+                                {service.config.fields.map(field => {
+                                  const fieldVal = (selectedServiceData.selectedValue as Record<string, number>)[field.id] || field.min;
+                                  return (
+                                    <div key={field.id} className="flex flex-col items-start md:items-end gap-1">
+                                      <span className="text-[10px] text-foreground-muted uppercase font-bold tracking-wide">{field.label}</span>
+                                      <div className="flex items-center gap-3 bg-white border border-black/10 rounded-lg p-1 shadow-sm">
+                                        <button 
+                                          onClick={() => {
+                                            if (fieldVal > field.min) {
+                                              updateServiceValue(service.id, fieldVal - field.step, field.id);
+                                            }
+                                          }}
+                                          className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-black/5 text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                          disabled={fieldVal <= field.min}
+                                        >
+                                          <Minus className="w-4 h-4" />
+                                        </button>
+                                        <span className="w-8 text-center font-bold text-sm select-none text-foreground">{fieldVal}</span>
+                                        <button 
+                                          onClick={() => {
+                                            if (fieldVal < field.max) {
+                                              updateServiceValue(service.id, fieldVal + field.step, field.id);
+                                            }
+                                          }}
+                                          className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-black/5 text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                          disabled={fieldVal >= field.max}
+                                        >
+                                          <Plus className="w-4 h-4" />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             ) : (
                               <div className="flex flex-col items-start md:items-end gap-1 w-full">

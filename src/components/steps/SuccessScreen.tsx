@@ -80,7 +80,11 @@ export function SuccessScreen() {
           
           let subText = s.category;
           if (s.config?.type === 'QUANTITY') {
-            subText += ` | ${s.selectedValue} ${s.config.unit}`;
+            const quantities = s.config.fields.map(field => {
+              const val = (s.selectedValue as Record<string, number>)[field.id] || field.min;
+              return `${val} ${field.label}`;
+            });
+            subText += ` | ${quantities.join(", ")}`;
           } else {
             subText += ` | ${s.selectedValue} Tier`;
           }
