@@ -39,7 +39,7 @@ export function Header() {
             {/* Invisible placeholder to keep the flex layout stable */}
             <div className="w-10 h-10 md:w-12 md:h-12"></div>
             {/* Absolutely positioned logo to grow without expanding navbar */}
-            <img src="/GMM%20Brochure%20Logo.png" alt="GMM Logo" className="absolute -top-4 md:-top-6 left-0 md:left-2 h-20 md:h-28 w-auto object-contain drop-shadow-md" />
+            <img src="/GMM%20Brochure%20Logo.png" alt="GMM Logo" className="absolute -top-4 md:-top-6 left-2 md:left-4 h-20 md:h-28 w-auto object-contain drop-shadow-md scale-[2] md:scale-[2.5] origin-left" />
           </motion.div>
         </div>
 
