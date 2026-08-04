@@ -28,6 +28,7 @@ interface StoreState {
   setStep: (step: number) => void;
   nextStep: () => void;
   prevStep: () => void;
+  reset: () => void;
   
   selectedPlan: PlanType;
   setSelectedPlan: (plan: PlanType) => void;
