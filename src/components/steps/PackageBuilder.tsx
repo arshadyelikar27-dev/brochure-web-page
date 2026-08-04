@@ -102,10 +102,10 @@ export function PackageBuilder() {
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => toggleService(service)}
-                      className={`relative cursor-pointer flex flex-col p-3 md:p-4 rounded-xl border transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-md ${
+                      className={`relative cursor-pointer flex flex-col p-3 md:p-4 rounded-xl border transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md ${
                         isSelected 
-                          ? "border-primary shadow-primary/10" 
-                          : "border-black/5 hover:border-black/10"
+                          ? "border-primary bg-white shadow-primary/10" 
+                          : "border-black/5 bg-slate-50 hover:border-black/10 hover:bg-white"
                       }`}
                     >
                       {/* Ripple background effect when selected */}

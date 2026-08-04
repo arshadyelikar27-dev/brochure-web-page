@@ -90,7 +90,7 @@ export function PlanSelection() {
               className={`relative cursor-pointer flex flex-col p-4 md:p-6 rounded-2xl md:rounded-3xl border transition-all duration-300 ${
                 isSelected 
                   ? "border-primary bg-primary/5 shadow-xl shadow-primary/10" 
-                  : "border-black/5 bg-white shadow-sm hover:shadow-md hover:border-primary/30"
+                  : "border-black/5 bg-slate-50 shadow-sm hover:shadow-md hover:border-primary/30"
               }`}
             >
               {plan.isPopular && (
