@@ -47,12 +47,17 @@ export interface ClientDetails {
   extraRequirements: string;
 }
 
+export type BillingCycle = 'MONTHLY' | 'YEARLY';
+
 interface StoreState {
   step: number;
   setStep: (step: number) => void;
   nextStep: () => void;
   prevStep: () => void;
   reset: () => void;
+  
+  billingCycle: BillingCycle;
+  setBillingCycle: (cycle: BillingCycle) => void;
   
   selectedPlan: PlanType;
   setSelectedPlan: (plan: PlanType) => void;
@@ -94,7 +99,11 @@ export const useStore = create<StoreState>((set, get) => ({
     selectedPlan: null,
     selectedServices: [],
     clientDetails: initialClientDetails,
+    billingCycle: 'MONTHLY',
   }),
+  
+  billingCycle: 'MONTHLY',
+  setBillingCycle: (cycle) => set({ billingCycle: cycle }),
   
   selectedPlan: null,
   setSelectedPlan: (plan) => set((state) => {
@@ -140,7 +149,7 @@ export const useStore = create<StoreState>((set, get) => ({
   })),
   
   getTimeline: () => {
-    const { selectedPlan, selectedServices } = get();
+    const { selectedPlan, selectedServices, billingCycle } = get();
     if (!selectedPlan) return 'TBD';
     
     if (selectedPlan === 'CUSTOM') {
@@ -148,9 +157,6 @@ export const useStore = create<StoreState>((set, get) => ({
       return `${selectedServices.length * 3} Days`;
     }
 
-    let baseDays = parseInt(basePlanTimelines[selectedPlan as keyof typeof basePlanTimelines] || '0');
-    let extraDays = selectedServices.length * 2; 
-    
-    return `${baseDays + extraDays} Days`;
+    return billingCycle === 'MONTHLY' ? '30 Days' : '365 Days';
   }
 }));

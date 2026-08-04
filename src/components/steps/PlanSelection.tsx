@@ -10,6 +10,8 @@ const plans = [
     name: "Starter",
     label: "GOOD",
     description: "Perfect for small businesses starting their digital journey.",
+    monthlyPrice: "21,000",
+    yearlyPrice: "252,000",
     features: [
       "Basic Website Setup",
       "Essential SEO",
@@ -23,6 +25,8 @@ const plans = [
     label: "BETTER",
     isPopular: true,
     description: "Comprehensive package for growing businesses seeking visibility.",
+    monthlyPrice: "31,000",
+    yearlyPrice: "372,000",
     features: [
       "Custom Website Design",
       "Advanced SEO",
@@ -36,6 +40,8 @@ const plans = [
     name: "Scale",
     label: "BEST",
     description: "All-in-one dominant digital presence for industry leaders.",
+    monthlyPrice: "41,000",
+    yearlyPrice: "492,000",
     features: [
       "Premium Web App",
       "Enterprise SEO",
@@ -47,7 +53,7 @@ const plans = [
 ];
 
 export function PlanSelection() {
-  const { selectedPlan, setSelectedPlan, setStep } = useStore();
+  const { selectedPlan, setSelectedPlan, setStep, billingCycle, setBillingCycle } = useStore();
 
   const handleSelectStandardPlan = (id: PlanType) => {
     setSelectedPlan(id);
@@ -64,9 +70,39 @@ export function PlanSelection() {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-6 md:mb-8"
+        className="text-center mb-6 md:mb-8 w-full max-w-5xl flex flex-col items-center"
       >
-        <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3">Choose Your <span className="text-gradient">Plan</span></h2>
+        <div className="w-full flex justify-end mb-4">
+           {/* Billing Toggle in Top Right */}
+           <div className="flex items-center bg-black/5 p-1 rounded-full relative z-10 shadow-sm border border-black/5">
+             <button
+               onClick={() => setBillingCycle('MONTHLY')}
+               className={`px-4 py-1.5 md:px-5 md:py-2 rounded-full text-xs md:text-sm font-bold transition-all relative z-10 ${
+                 billingCycle === 'MONTHLY' ? 'text-white' : 'text-foreground-muted hover:text-foreground'
+               }`}
+             >
+               Monthly
+             </button>
+             <button
+               onClick={() => setBillingCycle('YEARLY')}
+               className={`px-4 py-1.5 md:px-5 md:py-2 rounded-full text-xs md:text-sm font-bold transition-all relative z-10 ${
+                 billingCycle === 'YEARLY' ? 'text-white' : 'text-foreground-muted hover:text-foreground'
+               }`}
+             >
+               Yearly
+             </button>
+             
+             <motion.div 
+               className="absolute top-1 bottom-1 w-[50%] bg-primary rounded-full z-0 shadow-sm"
+               animate={{ 
+                 x: billingCycle === 'MONTHLY' ? '2%' : '98%' 
+               }}
+               transition={{ type: "spring", stiffness: 300, damping: 25 }}
+             />
+           </div>
+        </div>
+
+        <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3 mt-4 md:mt-0">Choose Your <span className="text-gradient">Plan</span></h2>
         <p className="text-foreground-muted text-xs md:text-sm max-w-[280px] md:max-w-xl mx-auto leading-relaxed">
           Select a base plan or build a custom package for your specific needs.
         </p>
@@ -76,6 +112,8 @@ export function PlanSelection() {
         {plans.map((plan, index) => {
           const isSelected = selectedPlan === plan.id;
           const isOtherSelected = selectedPlan && selectedPlan !== plan.id;
+          const price = billingCycle === 'MONTHLY' ? plan.monthlyPrice : plan.yearlyPrice;
+          const duration = billingCycle === 'MONTHLY' ? '/mo' : '/yr';
 
           return (
             <motion.div
@@ -102,11 +140,15 @@ export function PlanSelection() {
                 </div>
               )}
 
-              <div className="mb-2 md:mb-6 pointer-events-none">
+              <div className="mb-2 md:mb-4 pointer-events-none">
                 <div className="text-[9px] md:text-xs font-semibold tracking-widest text-foreground-muted mb-0.5 md:mb-1 uppercase">
                   {plan.label}
                 </div>
-                <h3 className="text-lg md:text-2xl font-bold text-foreground">{plan.name}</h3>
+                <h3 className="text-lg md:text-2xl font-bold text-foreground mb-2">{plan.name}</h3>
+                <div className="flex items-end gap-1">
+                  <span className="text-2xl md:text-3xl font-bold text-foreground">₹{price}</span>
+                  <span className="text-xs md:text-sm text-foreground-muted font-medium mb-1">{duration}</span>
+                </div>
               </div>
 
               <p className="text-[11px] md:text-sm text-foreground-muted mb-3 md:mb-6 pointer-events-none line-clamp-2 md:line-clamp-none">
