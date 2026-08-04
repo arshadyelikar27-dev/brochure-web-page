@@ -134,32 +134,48 @@ export function SuccessScreen() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] w-full px-4 py-12 text-center">
+    <div className="flex flex-col items-center justify-center min-h-[80vh] w-full px-4 py-12">
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", bounce: 0.5 }}
-        className="w-24 h-24 bg-accent/20 rounded-full flex items-center justify-center mb-8 mx-auto"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, type: "spring" }}
+        className="bg-white border border-black/5 p-8 md:p-12 rounded-3xl max-w-2xl w-full text-center relative overflow-hidden shadow-xl shadow-black/5"
       >
-        <CheckCircle2 className="w-12 h-12 text-accent" />
-      </motion.div>
+        {/* Confetti / Glow effect in background */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="max-w-2xl mx-auto space-y-6"
-      >
-        <h2 className="text-4xl md:text-5xl font-bold">Proposal Submitted <span className="text-gradient">Successfully</span></h2>
-        <p className="text-xl text-foreground-muted">
-          Thank you, {clientDetails.name || 'there'}! We've received your request for {clientDetails.businessName || 'your business'}.
-        </p>
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          className="w-20 h-20 md:w-24 md:h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8 relative z-10"
+        >
+          <CheckCircle className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+        </motion.div>
+
+        <motion.h2 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="text-3xl md:text-5xl font-bold mb-4 text-foreground"
+        >
+          Proposal Generated!
+        </motion.h2>
+
+        <motion.p 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="text-foreground-muted text-base md:text-lg mb-8"
+        >
+          Thank you, <span className="text-foreground font-semibold">{clientDetails.name}</span>. We've crafted your custom package and sent a copy to <span className="text-foreground font-semibold">{clientDetails.email}</span>.
+        </motion.p>
         
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <button 
             onClick={generatePDF}
             disabled={isGenerating}
-            className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+            className="w-full sm:w-auto px-8 py-4 bg-foreground text-background rounded-xl font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
           >
             {isGenerating ? "Generating PDF..." : "Download Proposal"} 
             <Download className="w-5 h-5" />
@@ -167,10 +183,19 @@ export function SuccessScreen() {
           
           <button 
             onClick={openWhatsApp}
-            className="w-full sm:w-auto px-8 py-4 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors"
+            className="w-full sm:w-auto px-8 py-4 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#25D366]/20"
           >
             Connect on WhatsApp
             <MessageCircle className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="flex justify-center mt-8 pt-6 border-t border-black/5">
+          <button 
+            onClick={() => useStore.getState().reset()}
+            className="text-primary hover:underline font-semibold text-sm flex items-center gap-2 transition-all"
+          >
+            Start a new quote <ExternalLink className="w-4 h-4" />
           </button>
         </div>
       </motion.div>

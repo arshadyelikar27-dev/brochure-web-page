@@ -82,10 +82,10 @@ export function PackageBuilder() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: catIndex * 0.1 }}
-                className="text-base md:text-lg font-bold mb-3 md:mb-4 flex items-center gap-3 text-white/80"
+                className="text-base md:text-lg font-bold mb-3 md:mb-4 flex items-center gap-3 text-foreground/80"
               >
                 {category.label}
-                <div className="h-[1px] flex-grow bg-white/10"></div>
+                <div className="h-[1px] flex-grow bg-black/5"></div>
               </motion.h3>
               
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
@@ -102,17 +102,17 @@ export function PackageBuilder() {
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => toggleService(service)}
-                      className={`relative cursor-pointer flex flex-col p-3 md:p-4 rounded-xl border transition-all duration-300 overflow-hidden ${
+                      className={`relative cursor-pointer flex flex-col p-3 md:p-4 rounded-xl border transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-md ${
                         isSelected 
-                          ? "border-accent bg-accent/10 shadow-[0_0_15px_rgba(217,249,157,0.1)]" 
-                          : "border-white/10 glass hover:border-white/30"
+                          ? "border-primary shadow-primary/10" 
+                          : "border-black/5 hover:border-black/10"
                       }`}
                     >
                       {/* Ripple background effect when selected */}
                       {isSelected && (
                         <motion.div 
                           layoutId={`ripple-${service.id}`}
-                          className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent -z-10"
+                          className="absolute inset-0 bg-primary/5 -z-10"
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ duration: 0.3 }}
@@ -120,25 +120,25 @@ export function PackageBuilder() {
                       )}
 
                       <div className="flex justify-between items-start mb-2 md:mb-3">
-                        <div className={`p-1.5 md:p-2 rounded-lg ${isSelected ? 'bg-accent text-black' : 'bg-white/5 text-white'}`}>
+                        <div className={`p-1.5 md:p-2 rounded-lg ${isSelected ? 'bg-primary/10 text-primary' : 'bg-black/5 text-foreground'}`}>
                           {Icon && <Icon className="w-3 h-3 md:w-4 md:h-4" />}
                         </div>
                         <div className="text-right">
-                          <span className="text-xs md:text-sm font-bold block">₹{service.price.toLocaleString()}</span>
+                          <span className="text-xs md:text-sm font-bold block text-foreground">₹{service.price.toLocaleString()}</span>
                           <span className="text-[8px] md:text-[9px] text-foreground-muted uppercase tracking-wider">Starting</span>
                         </div>
                       </div>
 
-                      <h4 className="text-xs md:text-sm font-bold mb-1 leading-tight">{service.name}</h4>
+                      <h4 className="text-xs md:text-sm font-bold mb-1 leading-tight text-foreground">{service.name}</h4>
                       <p className="text-[10px] md:text-xs text-foreground-muted mb-3 md:mb-4 line-clamp-2">{service.description}</p>
 
                       <div className="mt-auto flex items-center justify-between">
-                        <span className={`text-[9px] md:text-[10px] font-medium uppercase tracking-wide ${isSelected ? 'text-accent' : 'text-foreground-muted'}`}>
+                        <span className={`text-[9px] md:text-[10px] font-medium uppercase tracking-wide ${isSelected ? 'text-primary font-bold' : 'text-foreground-muted'}`}>
                           {isSelected ? 'Selected' : 'Add'}
                         </span>
                         
                         <div className={`w-4 h-4 md:w-5 md:h-5 rounded-full border flex items-center justify-center transition-colors ${
-                          isSelected ? 'border-accent bg-accent text-black' : 'border-white/30'
+                          isSelected ? 'border-primary bg-primary text-white' : 'border-black/10 text-foreground-muted'
                         }`}>
                           {isSelected ? <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}><Check className="w-2.5 h-2.5 md:w-3 md:h-3" /></motion.div> : <span className="text-xs md:text-sm leading-none">+</span>}
                         </div>

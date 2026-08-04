@@ -89,12 +89,12 @@ export function PlanSelection() {
               whileTap={{ scale: 0.98 }}
               className={`relative cursor-pointer flex flex-col p-4 md:p-6 rounded-2xl md:rounded-3xl border transition-all duration-300 ${
                 isSelected 
-                  ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(139,92,246,0.3)]" 
-                  : "border-white/10 glass hover:border-primary/50"
+                  ? "border-primary bg-primary/5 shadow-xl shadow-primary/10" 
+                  : "border-black/5 bg-white shadow-sm hover:shadow-md hover:border-primary/30"
               }`}
             >
               {plan.isPopular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-black px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[8px] md:text-[10px] font-bold flex items-center gap-1 shadow-[0_0_15px_rgba(217,249,157,0.5)]">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-black px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[8px] md:text-[10px] font-bold flex items-center gap-1 shadow-lg shadow-accent/20">
                   <Star className="w-2 h-2 md:w-3 md:h-3 fill-black" /> MOST POPULAR
                 </div>
               )}
@@ -104,10 +104,10 @@ export function PlanSelection() {
                   <div className="text-[9px] md:text-xs font-semibold tracking-widest text-foreground-muted mb-0.5 md:mb-1 uppercase">
                     {plan.label}
                   </div>
-                  <h3 className="text-lg md:text-2xl font-bold">{plan.name}</h3>
+                  <h3 className="text-lg md:text-2xl font-bold text-foreground">{plan.name}</h3>
                 </div>
                 <div className="text-right">
-                  <span className="text-lg md:text-3xl font-bold block md:inline leading-none">₹{plan.price.toLocaleString()}</span>
+                  <span className="text-lg md:text-3xl font-bold block md:inline leading-none text-foreground">₹{plan.price.toLocaleString()}</span>
                   <span className="text-[10px] md:text-sm text-foreground-muted block md:inline md:ml-1 mt-0.5">/mo</span>
                 </div>
               </div>
@@ -120,7 +120,7 @@ export function PlanSelection() {
                 <ul className="grid grid-cols-2 md:grid-cols-1 gap-y-1.5 gap-x-2 md:space-y-3 mb-4 md:mb-6">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-1.5 md:gap-2">
-                      <div className="mt-0.5 md:mt-0.5 bg-primary/20 p-0.5 md:p-1 rounded-full flex-shrink-0">
+                      <div className="mt-0.5 md:mt-0.5 bg-primary/10 p-0.5 md:p-1 rounded-full flex-shrink-0">
                         <Check className="w-2 h-2 md:w-3 md:h-3 text-primary" />
                       </div>
                       <span className="text-[10px] md:text-sm text-foreground/90 leading-tight">{feature}</span>
@@ -133,7 +133,7 @@ export function PlanSelection() {
                 className={`w-full py-2 text-xs md:py-3 md:text-sm rounded-lg md:rounded-xl font-semibold transition-all text-center mt-auto ${
                   isSelected 
                     ? "bg-primary text-white shadow-lg shadow-primary/20" 
-                    : "bg-white/5 group-hover:bg-white/10 text-white border border-white/10"
+                    : "bg-black/5 group-hover:bg-black/10 text-foreground border border-black/5"
                 }`}
               >
                 {isSelected ? "Selected" : "Select Plan"}

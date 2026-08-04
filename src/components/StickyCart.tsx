@@ -37,31 +37,31 @@ export function StickyCart() {
         animate={{ y: 0, opacity: 1, x: "-50%" }}
         className="fixed bottom-6 left-1/2 z-50 hidden md:block w-[95%] max-w-5xl"
       >
-        <div className="bg-black/80 backdrop-blur-2xl border border-white/20 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.8)] px-8 py-3 flex items-center justify-between">
+        <div className="bg-white/95 backdrop-blur-2xl border border-black/5 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.1)] px-8 py-3 flex items-center justify-between">
           <div className="flex items-center gap-8">
             <div>
               <p className="text-[10px] text-foreground-muted uppercase tracking-wider mb-0.5">Selected Plan</p>
-              <p className="font-bold text-white text-sm">{selectedPlan || "None"}</p>
+              <p className="font-bold text-foreground text-sm">{selectedPlan || "None"}</p>
             </div>
-            <div className="h-6 w-px bg-white/20" />
+            <div className="h-6 w-px bg-black/10" />
             <div>
               <p className="text-[10px] text-foreground-muted uppercase tracking-wider mb-0.5">Services</p>
-              <p className="font-bold text-white text-sm">{selectedServices.length} Added</p>
+              <p className="font-bold text-foreground text-sm">{selectedServices.length} Added</p>
             </div>
-            <div className="h-6 w-px bg-white/20" />
+            <div className="h-6 w-px bg-black/10" />
             <div>
               <p className="text-[10px] text-foreground-muted uppercase tracking-wider mb-0.5">Timeline</p>
-              <p className="font-bold text-white text-sm">{timeline}</p>
+              <p className="font-bold text-foreground text-sm">{timeline}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-6">
             <div className="text-right">
-              <p className="text-[10px] text-accent uppercase tracking-wider mb-0.5">Total</p>
+              <p className="text-[10px] text-foreground-muted uppercase tracking-wider mb-0.5">Total</p>
               <motion.p 
                 key={grandTotal}
-                initial={{ scale: 1.1, color: "#d9f99d" }}
-                animate={{ scale: 1, color: "#ffffff" }}
+                initial={{ scale: 1.1, color: "#6312E5" }}
+                animate={{ scale: 1, color: "#111827" }}
                 className="font-bold text-lg leading-none"
               >
                 ₹{grandTotal.toLocaleString()}
@@ -72,7 +72,7 @@ export function StickyCart() {
               {step > 1 && (
                 <button 
                   onClick={prevStep}
-                  className="px-5 py-2.5 bg-white/10 text-white text-sm rounded-full font-semibold flex items-center gap-2 transition-all hover:bg-white/20"
+                  className="px-5 py-2.5 bg-black/5 text-foreground text-sm rounded-full font-semibold flex items-center gap-2 transition-all hover:bg-black/10"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back
@@ -81,7 +81,7 @@ export function StickyCart() {
               <button 
                 onClick={nextStep}
                 disabled={!selectedPlan}
-                className="px-6 py-2.5 bg-primary text-white text-sm rounded-full font-semibold flex items-center gap-2 transition-all hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2.5 bg-primary text-white text-sm rounded-full font-semibold flex items-center gap-2 transition-all hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/20"
               >
                 {step === 1 ? "Customize" : "Review"}
                 <ArrowRight className="w-4 h-4" />
@@ -97,17 +97,17 @@ export function StickyCart() {
         animate={{ y: 0, x: "-50%" }}
         className="fixed bottom-4 left-1/2 w-[95%] z-50 md:hidden"
       >
-        <div className="bg-black/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-4 flex items-center justify-between">
+        <div className="bg-white/95 backdrop-blur-xl border border-black/5 rounded-2xl shadow-xl p-4 flex items-center justify-between">
           <div className="flex flex-col items-start">
-            <span className="text-[10px] text-foreground-muted uppercase">Total</span>
-            <span className="font-bold text-base">₹{grandTotal.toLocaleString()}</span>
+            <span className="text-[10px] text-foreground-muted uppercase tracking-wider">Total</span>
+            <span className="font-bold text-base text-foreground">₹{grandTotal.toLocaleString()}</span>
           </div>
 
           <div className="flex items-center gap-2">
              {step > 1 && (
                 <button 
                   onClick={prevStep}
-                  className="p-2 bg-white/10 text-white rounded-xl font-semibold flex items-center justify-center transition-all hover:bg-white/20"
+                  className="p-2 bg-black/5 text-foreground rounded-xl font-semibold flex items-center justify-center transition-all hover:bg-black/10"
                 >
                   <ArrowLeft className="w-4 h-4" />
                 </button>
@@ -115,7 +115,7 @@ export function StickyCart() {
             <button 
               onClick={nextStep}
               disabled={!selectedPlan}
-              className="px-5 py-2 bg-primary text-white text-sm rounded-xl font-semibold flex items-center gap-2 disabled:opacity-50"
+              className="px-5 py-2 bg-primary text-white text-sm rounded-xl font-semibold flex items-center gap-2 disabled:opacity-50 shadow-lg shadow-primary/20"
             >
               {step === 1 ? "Next" : "Review"}
               <ArrowRight className="w-3.5 h-3.5" />
