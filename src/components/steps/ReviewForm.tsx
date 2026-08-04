@@ -85,15 +85,13 @@ export function ReviewForm() {
                         <Check className="w-4 h-4 text-primary" />
                         <span className="text-sm font-bold text-foreground">{service.name}</span>
                       </div>
-                      {service.selectedOptions && service.selectedOptions.length > 0 && (
-                        <div className="pl-6 flex flex-wrap gap-1">
-                          {service.selectedOptions.map(opt => (
-                            <span key={opt} className="text-[10px] bg-white text-foreground-muted px-2 py-1 rounded-md border border-black/5">
-                              {opt}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+                      <div className="pl-6 flex flex-wrap gap-1">
+                        <span className="text-[10px] bg-white text-foreground-muted px-2 py-1 rounded-md border border-black/5 font-semibold uppercase tracking-wide">
+                          {service.config?.type === 'QUANTITY' 
+                            ? `${service.selectedValue} ${service.config.unit}`
+                            : `${service.selectedValue} Tier`}
+                        </span>
+                      </div>
                     </li>
                   ))}
                 </ul>

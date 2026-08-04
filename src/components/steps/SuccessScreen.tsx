@@ -79,8 +79,10 @@ export function SuccessScreen() {
           pdf.setTextColor(100, 100, 100);
           
           let subText = s.category;
-          if (s.selectedOptions && s.selectedOptions.length > 0) {
-            subText += ` | Options: ${s.selectedOptions.join(", ")}`;
+          if (s.config?.type === 'QUANTITY') {
+            subText += ` | ${s.selectedValue} ${s.config.unit}`;
+          } else {
+            subText += ` | ${s.selectedValue} Tier`;
           }
           
           pdf.text(subText, 40, y + 15);

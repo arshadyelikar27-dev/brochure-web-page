@@ -17,28 +17,30 @@ import {
   Smartphone,
   Mail,
   Check,
-  Code
+  Code,
+  Plus,
+  Minus
 } from "lucide-react";
 
 const availableServices: Service[] = [
   // MARKETING
-  { id: "m1", category: "MARKETING", name: "Performance Marketing", description: "Lead Generation", icon: "TrendingUp", options: ["Lead Generation", "CRO", "PPC"] },
-  { id: "m2", category: "MARKETING", name: "Social Media", description: "Brand awareness", icon: "Share2", options: ["Post Creating", "Reels Creating", "Community Management"] },
-  { id: "m3", category: "MARKETING", name: "SEO", description: "Organic visibility", icon: "Search", options: ["Keyword Research", "On-Page SEO", "Backlink Building"] },
-  { id: "m6", category: "MARKETING", name: "Digital Marketing", description: "Full 360 approach", icon: "Megaphone", options: ["Strategy Session", "Full Management", "Analytics Setup"] },
+  { id: "m1", category: "MARKETING", name: "Performance Marketing", description: "Lead Generation", icon: "TrendingUp", config: { type: "TIER", tiers: ["Basic", "Advanced", "Aggressive"] } },
+  { id: "m2", category: "MARKETING", name: "Social Media", description: "Brand awareness", icon: "Share2", config: { type: "QUANTITY", unit: "Posts/Reels", min: 4, max: 60, step: 1 } },
+  { id: "m3", category: "MARKETING", name: "SEO", description: "Organic visibility", icon: "Search", config: { type: "TIER", tiers: ["Local", "National", "Enterprise"] } },
+  { id: "m6", category: "MARKETING", name: "Digital Marketing", description: "Full 360 approach", icon: "Megaphone", config: { type: "TIER", tiers: ["Starter", "Growth", "Dominance"] } },
   
   // CREATIVE
-  { id: "c1", category: "CREATIVE", name: "Branding", description: "Identity & positioning", icon: "Palette", options: ["Logo Design", "Brand Guidelines", "Typography & Color"] },
-  { id: "c2", category: "CREATIVE", name: "Graphic Design", description: "Design retainers", icon: "PenTool", options: ["Marketing Assets", "Pitch Decks", "Merchandise"] },
-  { id: "c3", category: "CREATIVE", name: "Animation", description: "Motion graphics", icon: "Video", options: ["2D Explainer", "3D Product Demo", "Logo Animation"] },
-  { id: "c4", category: "CREATIVE", name: "Ai Ads", description: "AI-generated commercials", icon: "MonitorPlay", options: ["Image Generation", "Video Generation", "Script Writing"] },
+  { id: "c1", category: "CREATIVE", name: "Branding", description: "Identity & positioning", icon: "Palette", config: { type: "TIER", tiers: ["Logo Only", "Full Identity", "Brand Book"] } },
+  { id: "c2", category: "CREATIVE", name: "Graphic Design", description: "Design retainers", icon: "PenTool", config: { type: "QUANTITY", unit: "Assets", min: 1, max: 100, step: 1 } },
+  { id: "c3", category: "CREATIVE", name: "Animation", description: "Motion graphics", icon: "Video", config: { type: "QUANTITY", unit: "Videos", min: 1, max: 10, step: 1 } },
+  { id: "c4", category: "CREATIVE", name: "Ai Ads", description: "AI-generated commercials", icon: "MonitorPlay", config: { type: "QUANTITY", unit: "Creatives", min: 1, max: 20, step: 1 } },
   
   // DEVELOPMENT
-  { id: "d1", category: "DEVELOPMENT", name: "Web Development", description: "Modern, responsive", icon: "Layout", options: ["Landing Page", "Corporate Website", "E-Commerce"] },
-  { id: "d2", category: "DEVELOPMENT", name: "App Development", description: "iOS & Android", icon: "Smartphone", options: ["iOS Native", "Android Native", "Cross-Platform"] },
+  { id: "d1", category: "DEVELOPMENT", name: "Web Development", description: "Modern, responsive", icon: "Layout", config: { type: "TIER", tiers: ["Landing Page", "Corporate Site", "E-Commerce"] } },
+  { id: "d2", category: "DEVELOPMENT", name: "App Development", description: "iOS & Android", icon: "Smartphone", config: { type: "TIER", tiers: ["MVP", "Standard Native", "Enterprise"] } },
   
   // COMMUNICATION
-  { id: "cm1", category: "COMMUNICATION", name: "Email Marketing", description: "Newsletters & automation", icon: "Mail", options: ["Newsletter Setup", "Automation Flows", "Template Design"] },
+  { id: "cm1", category: "COMMUNICATION", name: "Email Marketing", description: "Newsletters & automation", icon: "Mail", config: { type: "QUANTITY", unit: "Newsletters", min: 1, max: 10, step: 1 } },
 ];
 
 const categories = [
@@ -54,7 +56,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export function PackageBuilder() {
-  const { selectedServices, toggleService, toggleServiceOption, setStep } = useStore();
+  const { selectedServices, toggleService, updateServiceValue, setStep } = useStore();
 
   return (
     <div className="flex flex-col items-center justify-start min-h-[85vh] w-full px-4 pt-16 md:py-12 pb-32 md:pb-36">
@@ -65,11 +67,11 @@ export function PackageBuilder() {
       >
         <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4 text-foreground">Build Your <span className="text-gradient">Custom Package</span></h2>
         <p className="text-foreground-muted text-xs md:text-base max-w-2xl mx-auto">
-          Select the specific services you need to achieve your goals.
+          Select the specific services you need and configure them for your goals.
         </p>
       </motion.div>
 
-      <div className="w-full max-w-5xl space-y-8 md:space-y-12">
+      <div className="w-full max-w-4xl space-y-8 md:space-y-12">
         {categories.map((category, catIndex) => {
           const categoryServices = availableServices.filter(s => s.category === category.id);
           if (categoryServices.length === 0) return null;
@@ -86,7 +88,7 @@ export function PackageBuilder() {
                 <div className="h-[1px] flex-grow bg-black/5"></div>
               </motion.h3>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+              <div className="flex flex-col gap-3">
                 {categoryServices.map((service, index) => {
                   const selectedServiceData = selectedServices.find(s => s.id === service.id);
                   const isSelected = !!selectedServiceData;
@@ -98,17 +100,10 @@ export function PackageBuilder() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: (catIndex * 0.1) + (index * 0.05) }}
-                      whileHover={{ scale: isSelected ? 1 : 1.02, y: isSelected ? 0 : -2 }}
-                      whileTap={{ scale: isSelected ? 1 : 0.98 }}
-                      onClick={() => {
-                        if (!isSelected) {
-                          toggleService(service as Service);
-                        }
-                      }}
-                      className={`relative flex flex-col p-3 md:p-4 rounded-xl border transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md ${
+                      className={`relative flex flex-col md:flex-row items-start md:items-center p-4 md:p-5 rounded-2xl border transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md ${
                         isSelected 
-                          ? "border-primary bg-white shadow-primary/10 cursor-default" 
-                          : "border-black/5 bg-slate-50 hover:border-black/10 hover:bg-white cursor-pointer"
+                          ? "border-primary bg-white shadow-primary/10" 
+                          : "border-black/5 bg-slate-50 hover:border-black/10 hover:bg-white"
                       }`}
                     >
                       {isSelected && (
@@ -121,71 +116,88 @@ export function PackageBuilder() {
                         />
                       )}
                       
-                      {/* Clickable Header Area (if selected, clicking header toggles it off) */}
+                      {/* Left Side: Checkbox + Icon + Details */}
                       <div 
-                        className={`w-full flex flex-col h-full ${isSelected ? 'cursor-pointer' : ''}`}
-                        onClick={(e) => {
-                          if (isSelected) {
-                            e.stopPropagation();
-                            toggleService(service as Service);
-                          }
-                        }}
+                        className="flex-1 flex items-center gap-4 cursor-pointer w-full"
+                        onClick={() => toggleService(service as Service)}
                       >
-                        <div className="flex justify-between items-start mb-2 md:mb-3">
-                          <div className={`p-1.5 md:p-2 rounded-lg ${isSelected ? 'bg-primary/10 text-primary' : 'bg-black/5 text-foreground'}`}>
-                            {Icon && <Icon className="w-3 h-3 md:w-4 md:h-4" />}
-                          </div>
+                        <div className={`w-6 h-6 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
+                          isSelected ? 'border-primary bg-primary text-white' : 'border-black/20 bg-white'
+                        }`}>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
+                        </div>
+                        
+                        <div className={`p-2.5 rounded-xl flex-shrink-0 ${isSelected ? 'bg-primary/10 text-primary' : 'bg-black/5 text-foreground'}`}>
+                          {Icon && <Icon className="w-5 h-5" />}
                         </div>
 
-                        <h4 className="text-xs md:text-sm font-bold mb-1 leading-tight text-foreground">{service.name}</h4>
-                        <p className="text-[10px] md:text-xs text-foreground-muted mb-3 md:mb-4 line-clamp-2">{service.description}</p>
-
-                        <div className="mt-auto flex items-center justify-between">
-                          <span className={`text-[9px] md:text-[10px] font-medium uppercase tracking-wide ${isSelected ? 'text-primary font-bold' : 'text-foreground-muted'}`}>
-                            {isSelected ? 'Selected' : 'Add'}
-                          </span>
-                          
-                          <div className={`w-4 h-4 md:w-5 md:h-5 rounded-full border flex items-center justify-center transition-colors ${
-                            isSelected ? 'border-primary bg-primary text-white' : 'border-black/10 text-foreground-muted'
-                          }`}>
-                            {isSelected ? <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}><Check className="w-2.5 h-2.5 md:w-3 md:h-3" /></motion.div> : <span className="text-xs md:text-sm leading-none">+</span>}
-                          </div>
+                        <div className="flex flex-col flex-1 pr-4">
+                          <h4 className="text-sm md:text-base font-bold leading-tight text-foreground">{service.name}</h4>
+                          <p className="text-xs text-foreground-muted line-clamp-1">{service.description}</p>
                         </div>
                       </div>
 
+                      {/* Right Side: Configuration Options (Visible only when selected) */}
                       <AnimatePresence>
-                        {isSelected && service.options && (
+                        {isSelected && selectedServiceData && (
                           <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: "easeInOut" }}
-                            className="overflow-hidden w-full"
+                            initial={{ width: 0, opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{ width: "auto", opacity: 1, height: "auto", marginTop: 16 }}
+                            exit={{ width: 0, opacity: 0, height: 0, marginTop: 0 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            className="w-full md:w-auto md:!mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-black/5 flex items-center justify-start md:justify-end shrink-0 md:!h-auto md:!opacity-100 md:!w-auto md:!scale-100"
                           >
-                            <div className="mt-4 pt-4 border-t border-black/10 flex flex-col gap-2">
-                              {service.options.map(option => {
-                                const isOptionSelected = selectedServiceData?.selectedOptions?.includes(option);
-                                return (
-                                  <div
-                                    key={option}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      toggleServiceOption(service.id, option);
+                            {service.config.type === "QUANTITY" ? (
+                              <div className="flex flex-col items-start md:items-end gap-1">
+                                <span className="text-[10px] text-foreground-muted uppercase font-bold tracking-wide">{service.config.unit}</span>
+                                <div className="flex items-center gap-3 bg-white border border-black/10 rounded-lg p-1 shadow-sm">
+                                  <button 
+                                    onClick={() => {
+                                      const currentVal = selectedServiceData.selectedValue as number;
+                                      if (currentVal > service.config.min) {
+                                        updateServiceValue(service.id, currentVal - service.config.step);
+                                      }
                                     }}
-                                    className={`flex items-center gap-2 p-2 rounded-lg text-xs cursor-pointer transition-colors ${
-                                      isOptionSelected ? 'bg-primary text-white' : 'bg-black/5 hover:bg-black/10 text-foreground'
-                                    }`}
+                                    className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-black/5 text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                    disabled={(selectedServiceData.selectedValue as number) <= service.config.min}
                                   >
-                                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${
-                                      isOptionSelected ? 'border-white bg-primary' : 'border-black/20 bg-white'
-                                    }`}>
-                                      {isOptionSelected && <Check className="w-2.5 h-2.5 text-white" />}
-                                    </div>
-                                    <span>{option}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
+                                    <Minus className="w-4 h-4" />
+                                  </button>
+                                  <span className="w-8 text-center font-bold text-sm select-none text-foreground">{selectedServiceData.selectedValue}</span>
+                                  <button 
+                                    onClick={() => {
+                                      const currentVal = selectedServiceData.selectedValue as number;
+                                      if (currentVal < service.config.max) {
+                                        updateServiceValue(service.id, currentVal + service.config.step);
+                                      }
+                                    }}
+                                    className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-black/5 text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                    disabled={(selectedServiceData.selectedValue as number) >= service.config.max}
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="flex flex-col items-start md:items-end gap-1 w-full">
+                                <span className="text-[10px] text-foreground-muted uppercase font-bold tracking-wide">Select Tier</span>
+                                <div className="flex items-center gap-1 bg-white border border-black/10 rounded-lg p-1 shadow-sm w-full md:w-auto overflow-x-auto">
+                                  {service.config.tiers.map((tier) => (
+                                    <button
+                                      key={tier}
+                                      onClick={() => updateServiceValue(service.id, tier)}
+                                      className={`px-3 md:px-4 py-2 rounded-md text-xs font-semibold whitespace-nowrap transition-colors ${
+                                        selectedServiceData.selectedValue === tier
+                                          ? 'bg-primary text-white shadow-sm'
+                                          : 'text-foreground hover:bg-black/5'
+                                      }`}
+                                    >
+                                      {tier}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -197,6 +209,7 @@ export function PackageBuilder() {
           );
         })}
       </div>
+      
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -4,17 +4,32 @@ export type PlanType = 'GOOD' | 'BETTER' | 'BEST' | 'CUSTOM' | null;
 
 export type ServiceCategory = 'MARKETING' | 'CREATIVE' | 'DEVELOPMENT' | 'COMMUNICATION';
 
+export type ConfigType = 'QUANTITY' | 'TIER';
+
+export interface QuantityConfig {
+  type: 'QUANTITY';
+  unit: string;
+  min: number;
+  max: number;
+  step: number;
+}
+
+export interface TierConfig {
+  type: 'TIER';
+  tiers: string[];
+}
+
 export interface Service {
   id: string;
   category: ServiceCategory;
   name: string;
   description: string;
   icon: string;
-  options?: string[];
+  config: QuantityConfig | TierConfig;
 }
 
 export interface SelectedService extends Service {
-  selectedOptions: string[];
+  selectedValue: number | string;
 }
 
 export interface ClientDetails {
@@ -39,7 +54,7 @@ interface StoreState {
   
   selectedServices: SelectedService[];
   toggleService: (service: Service) => void;
-  toggleServiceOption: (serviceId: string, option: string) => void;
+  updateServiceValue: (serviceId: string, value: number | string) => void;
   
   clientDetails: ClientDetails;
   setClientDetails: (details: Partial<ClientDetails>) => void;
@@ -91,20 +106,19 @@ export const useStore = create<StoreState>((set, get) => ({
     if (exists) {
       return { selectedServices: state.selectedServices.filter((s) => s.id !== service.id) };
     } else {
-      return { selectedServices: [...state.selectedServices, { ...service, selectedOptions: [] }] };
+      // Default value: min if quantity, first tier if tier
+      const defaultValue = service.config.type === 'QUANTITY' 
+        ? service.config.min 
+        : service.config.tiers[0];
+        
+      return { selectedServices: [...state.selectedServices, { ...service, selectedValue: defaultValue }] };
     }
   }),
-  toggleServiceOption: (serviceId, option) => set((state) => {
+  updateServiceValue: (serviceId, value) => set((state) => {
     return {
       selectedServices: state.selectedServices.map(service => {
         if (service.id === serviceId) {
-          const hasOption = service.selectedOptions.includes(option);
-          return {
-            ...service,
-            selectedOptions: hasOption 
-              ? service.selectedOptions.filter(o => o !== option)
-              : [...service.selectedOptions, option]
-          };
+          return { ...service, selectedValue: value };
         }
         return service;
       })
