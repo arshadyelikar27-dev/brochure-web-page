@@ -18,7 +18,7 @@ export function Header() {
   };
 
   return (
-    <header className="w-full fixed top-0 left-0 z-50 p-3 md:p-4 border-b border-black/5 bg-white/90 backdrop-blur-md">
+    <header className="w-full fixed top-0 left-0 z-50 p-3 md:p-4 border-b border-black/10 bg-accent/90 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-2 md:gap-4">
           {step > 1 && (

@@ -574,7 +574,7 @@ export function PlanSelection() {
                           "w-full py-1.5 md:py-3 mt-3 md:mt-6 text-[8px] md:text-sm rounded md:rounded-xl font-bold transition-all text-center flex items-center justify-center gap-1",
                           isSelected
                             ? "bg-primary text-white shadow-lg shadow-primary/20"
-                            : "bg-black/5 group-hover:bg-black/10 text-foreground"
+                            : "bg-accent text-black shadow-sm shadow-accent/20"
                         )}
                       >
                         {isSelected ? "Selected" : <>View Details <ChevronRight className="w-2 h-2 md:w-3.5 md:h-3.5" /></>}
