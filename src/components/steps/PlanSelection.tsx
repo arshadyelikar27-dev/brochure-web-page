@@ -38,7 +38,7 @@ const plans: Plan[] = [
     label: "GOOD",
     description: "Perfect for small businesses starting their digital journey.",
     price: 21000,
-    yearlyPrice: 252000,
+    yearlyPrice: 250000,
     services: [
       {
         name: "Content & Social Media",
@@ -102,7 +102,7 @@ const plans: Plan[] = [
     isPopular: true,
     description: "Comprehensive package for growing businesses seeking visibility.",
     price: 31000,
-    yearlyPrice: 372000,
+    yearlyPrice: 370000,
     services: [
       {
         name: "Content & Social Media",
@@ -161,7 +161,7 @@ const plans: Plan[] = [
     label: "BEST",
     description: "All-in-one dominant digital presence for industry leaders.",
     price: 41000,
-    yearlyPrice: 492000,
+    yearlyPrice: 490000,
     services: [
       {
         name: "Content & Social Media",
