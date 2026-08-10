@@ -235,9 +235,9 @@ export function PlanSelection() {
                   <Card className="bg-transparent border-none shadow-none h-full flex flex-col p-1 md:p-3">
                     <CardHeader className="text-left pb-1 md:pb-2 pt-1 md:pt-2 px-1 md:px-3">
                       <div className="text-[7px] md:text-[10px] font-semibold tracking-widest text-foreground-muted mb-0.5 md:mb-1 uppercase">
-                        {plan.label}
+                        {plan.name}
                       </div>
-                      <h3 className="text-sm md:text-2xl font-bold text-foreground mb-0.5 md:mb-1">{plan.name}</h3>
+                      <h3 className="text-sm md:text-2xl font-bold text-foreground mb-0.5 md:mb-1">{plan.label}</h3>
                       
                       <div className="flex items-baseline mb-1 md:mb-2">
                         <span className="text-sm md:text-4xl font-bold text-foreground flex items-center">
