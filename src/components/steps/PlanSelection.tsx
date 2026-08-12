@@ -52,14 +52,6 @@ const plans: Plan[] = [
         ],
       },
       {
-        name: "WhatsApp Marketing",
-        icon: "MessageCircle",
-        subServices: [
-          "WhatsApp Promotional Campaigns",
-          "Customer Follow-up & Re-engagement",
-        ],
-      },
-      {
         name: "Paid Advertising",
         icon: "Megaphone",
         subServices: [
