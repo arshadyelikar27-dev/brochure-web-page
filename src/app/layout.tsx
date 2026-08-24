@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "GMM Digital Agency - Build Your Growth Package",
   description: "Create your own custom digital solution in just a few steps with GMM Digital Agency.",
+  icons: {
+    icon: "/GMM Brochure Logo.png",
+    shortcut: "/GMM Brochure Logo.png",
+    apple: "/GMM Brochure Logo.png",
+  },
 };
 
 export default function RootLayout({

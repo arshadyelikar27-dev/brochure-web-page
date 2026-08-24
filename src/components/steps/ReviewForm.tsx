@@ -18,14 +18,27 @@ export function ReviewForm() {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call and PDF generation
-    setTimeout(() => {
+    
+    try {
+      await fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...clientDetails,
+          selectedPlan,
+          selectedServices,
+          timeline: getTimeline(),
+        }),
+      });
+    } catch (err) {
+      console.error("Submission failed:", err);
+    } finally {
       setIsSubmitting(false);
       nextStep();
-    }, 2000);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
