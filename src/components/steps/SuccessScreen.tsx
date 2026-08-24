@@ -166,7 +166,7 @@ export function SuccessScreen() {
           transition={{ delay: 0.4 }}
           className="text-foreground-muted text-base md:text-lg mb-8"
         >
-          Thank you, <span className="text-foreground font-semibold">{clientDetails.name}</span>. We've crafted your custom package and sent a copy to <span className="text-foreground font-semibold">{clientDetails.email}</span>.
+          Thank you, <span className="text-foreground font-semibold">{clientDetails.name}</span>! Your proposal request has been successfully submitted. We will review your requirements and get back to you shortly.
         </motion.p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

@@ -231,7 +231,7 @@ export async function POST(req: Request) {
           },
           body: JSON.stringify({
             from: "GMM Digital Agency <onboarding@resend.dev>",
-            to: [adminEmail, email],
+            to: [adminEmail],
             subject: `🚀 Growth Package Proposal - ${businessName || name}`,
             html: emailHtmlCard,
           }),
