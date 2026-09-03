@@ -37,7 +37,7 @@ const plans: Plan[] = [
     name: "Starter",
     label: "GOOD",
     description: "Perfect for small businesses starting their digital journey.",
-    price: 21000,
+    price: 31000,
     yearlyPrice: 250000,
     services: [
       {
@@ -58,15 +58,6 @@ const plans: Plan[] = [
           "Meta Ads \u2013 Setup & Management",
           "Lead Generation Campaigns",
           "Ad Budget provided separately by client",
-        ],
-      },
-      {
-        name: "Basic SEO",
-        icon: "Search",
-        subServices: [
-          "Google Business Profile Optimization",
-          "Basic Local SEO",
-          "Keyword & Page Optimization",
         ],
       },
       {
@@ -93,7 +84,7 @@ const plans: Plan[] = [
     label: "BETTER",
     isPopular: true,
     description: "Comprehensive package for growing businesses seeking visibility.",
-    price: 31000,
+    price: 41000,
     yearlyPrice: 370000,
     services: [
       {
@@ -152,7 +143,7 @@ const plans: Plan[] = [
     name: "Scale",
     label: "BEST",
     description: "All-in-one dominant digital presence for industry leaders.",
-    price: 41000,
+    price: 51000,
     yearlyPrice: 490000,
     services: [
       {
